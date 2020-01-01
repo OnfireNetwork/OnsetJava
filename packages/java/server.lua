@@ -34,10 +34,6 @@ function RunClientScript(player, script)
 	end
 end
 
-AddEvent("OnPlayerJoin", function(player)
-	RunClientScript(player, "AddPlayerChat(\"Hello World\")")
-end)
-
 AddEvent("OnPackageStart", function()
 	jvm = CreateJava()
 	LinkJavaAdapter(jvm, "net/onfirenetwork/onsetjava/jni/LuaAdapter")

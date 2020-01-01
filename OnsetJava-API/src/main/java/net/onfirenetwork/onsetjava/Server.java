@@ -6,6 +6,7 @@ import net.onfirenetwork.onsetjava.entity.*;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.CommandExecutor;
+import net.onfirenetwork.onsetjava.plugin.event.EventListener;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public interface Server {
     Dimension getDimension(int id);
     void broadcast(String message);
     void print(Object value);
+    void registerListener(EventListener listener);
     PluginManager getPluginManager();
     default WorldObject createObject(Vector location, int model){
         return createObject(location.getX(), location.getY(), location.getZ(), model);

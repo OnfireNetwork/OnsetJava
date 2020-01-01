@@ -9,6 +9,7 @@ import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.Server;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
+import net.onfirenetwork.onsetjava.plugin.event.EventListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class ServerJNI implements Server {
         if(!pluginFolder.exists())
             pluginFolder.mkdir();
         instance.pluginManager.load(pluginFolder);
+        instance.registerCommand("test", (player, name, args) -> {
+            instance.createPickup(player.getLocation(), 2);
+            return true;
+        });
     }
 
     public static Object[] callGlobal(String name, Object... args){
@@ -203,6 +208,10 @@ public class ServerJNI implements Server {
 
     public void registerCommand(String name, CommandExecutor executor) {
         packageBus.registerCommand(name, executor);
+    }
+
+    public void registerListener(EventListener listener){
+        packageBus.registerListener(listener);
     }
 
     public void callEvent(Event event){
