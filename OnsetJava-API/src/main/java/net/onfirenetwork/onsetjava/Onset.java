@@ -3,7 +3,6 @@ package net.onfirenetwork.onsetjava;
 import net.onfirenetwork.onsetjava.entity.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Onset {
     private static Server server = null;
