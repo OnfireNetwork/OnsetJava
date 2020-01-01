@@ -48,8 +48,8 @@ public class VehicleJNI implements Vehicle {
         Object[] coords = ServerJNI.callGlobal("GetVehicleRotation", id);
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
-    public void setRotation(Vector rotation){
-        ServerJNI.callGlobal("SetVehicleRotation", id, rotation.getX(), rotation.getY(), rotation.getZ());
+    public void setRotation(double x, double y, double z){
+        ServerJNI.callGlobal("SetVehicleRotation", id, x, y, z);
     }
     public void setHealth(double health){
         ServerJNI.callGlobal("SetVehicleHealth", id, health);

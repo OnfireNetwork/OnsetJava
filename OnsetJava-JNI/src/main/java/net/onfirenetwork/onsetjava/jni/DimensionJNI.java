@@ -2,9 +2,7 @@ package net.onfirenetwork.onsetjava.jni;
 
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
-import net.onfirenetwork.onsetjava.entity.NPC;
-import net.onfirenetwork.onsetjava.entity.Player;
-import net.onfirenetwork.onsetjava.entity.Vehicle;
+import net.onfirenetwork.onsetjava.entity.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +23,12 @@ public class DimensionJNI implements Dimension {
     }
     public List<NPC> getNPCs(){
         return Onset.getNPCs().stream().filter(e -> e.getId() == id).collect(Collectors.toList());
+    }
+    public List<Pickup> getPickups(){
+        return Onset.getPickups().stream().filter(e -> e.getId() == id).collect(Collectors.toList());
+    }
+    public List<Text3D> getText3Ds(){
+        return Onset.getText3Ds().stream().filter(e -> e.getId() == id).collect(Collectors.toList());
     }
     public boolean equals(Object obj) {
         if(obj.getClass() != DimensionJNI.class)

@@ -24,6 +24,10 @@ public interface Server {
     NPC getNPC(int id);
     List<NPC> getNPCs();
     WorldObject getObject(int id);
+    List<Pickup> getPickups();
+    Pickup getPickup(int id);
+    List<Text3D> getText3Ds();
+    Text3D getText3D(int id);
     void registerCommand(String name, CommandExecutor executor);
     void callEvent(Event event);
     Dimension getDimension(int id);
@@ -64,6 +68,14 @@ public interface Server {
         return createDoor(x, y, z, heading, model, false);
     }
     Door createDoor(double x, double y, double z, double heading, int model, boolean enableOpen);
+    default Pickup createPickup(Vector location, int model){
+        return createPickup(location.getX(), location.getY(), location.getZ(), model);
+    }
+    Pickup createPickup(double x, double y, double z, int model);
+    default Text3D createText3D(String text, double size, Vector location, Vector rotation){
+        return createText3D(text, size, location.getX(), location.getY(), location.getZ(), rotation.getX(), rotation.getY(), rotation.getZ());
+    }
+    Text3D createText3D(String text, double size, double x, double y, double z, double rx, double ry, double rz);
     default void createExplosion(int dimension, Vector location, int type){
         createExplosion(dimension, location.getX(), location.getY(), location.getZ(), type);
     }

@@ -3,7 +3,6 @@ package net.onfirenetwork.onsetjava.entity;
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Vector;
-import net.onfirenetwork.onsetjava.enums.AttachType;
 
 public interface WorldObject extends HitEntity, PropertyEntity, AttachmentEntity {
     int getId();
@@ -18,9 +17,15 @@ public interface WorldObject extends HitEntity, PropertyEntity, AttachmentEntity
     Vector getLocation();
     void setLocation(Vector location);
     Vector getRotation();
-    void setRotation(Vector rotation);
+    default void setRotation(Vector rotation){
+        setRotation(rotation.getX(), rotation.getY(), rotation.getZ());
+    }
+    void setRotation(double x, double y, double z);
     Vector getScale();
-    void setScale(Vector scale);
+    default void setScale(Vector scale){
+        setScale(scale.getX(), scale.getY(), scale.getZ());
+    }
+    void setScale(double x, double y, double z);
     int getModel();
     void attach(AttachmentEntity entity, Vector offset);
     void attach(AttachmentEntity entity, Vector offset, Vector rotation);

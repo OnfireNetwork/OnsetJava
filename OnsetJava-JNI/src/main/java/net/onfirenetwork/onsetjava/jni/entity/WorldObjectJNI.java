@@ -35,15 +35,15 @@ public class WorldObjectJNI implements WorldObject {
         Object[] coords = ServerJNI.callGlobal("GetObjectRotation", id);
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
-    public void setRotation(Vector rotation) {
-        ServerJNI.callGlobal("SetObjectRotation", rotation.getX(), rotation.getY(), rotation.getZ());
+    public void setRotation(double x, double y, double z){
+        ServerJNI.callGlobal("SetObjectRotation", id, x, y, z);
     }
     public Vector getScale() {
         Object[] coords = ServerJNI.callGlobal("GetObjectScale", id);
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
-    public void setScale(Vector scale) {
-        ServerJNI.callGlobal("SetObjectScale", scale.getX(), scale.getY(), scale.getZ());
+    public void setScale(double x, double y, double z) {
+        ServerJNI.callGlobal("SetObjectScale", x, y, z);
     }
     public int getModel(){
         return (Integer) ServerJNI.callGlobal("GetObjectModel", id)[0];

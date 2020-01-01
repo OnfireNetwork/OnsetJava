@@ -23,7 +23,10 @@ public interface Vehicle extends HitEntity, PropertyEntity, AttachmentEntity {
     Vector getLocation();
     void setLocation(Vector location);
     Vector getRotation();
-    void setRotation(Vector rotation);
+    default void setRotation(Vector rotation) {
+        setRotation(rotation.getX(), rotation.getY(), rotation.getZ());
+    }
+    void setRotation(double x, double y, double z);
     void setColor(Color color);
     Color getColor();
     int getModel();

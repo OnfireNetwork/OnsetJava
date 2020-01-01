@@ -1,11 +1,9 @@
 package net.onfirenetwork.onsetjava;
 
-import net.onfirenetwork.onsetjava.entity.NPC;
-import net.onfirenetwork.onsetjava.entity.Player;
-import net.onfirenetwork.onsetjava.entity.Vehicle;
-import net.onfirenetwork.onsetjava.entity.WorldObject;
+import net.onfirenetwork.onsetjava.entity.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Onset {
     private static Server server = null;
@@ -32,6 +30,18 @@ public class Onset {
     }
     public static List<NPC> getNPCs(){
         return server.getNPCs();
+    }
+    public static Pickup getPickup(int id){
+        return server.getPickup(id);
+    }
+    public static List<Pickup> getPickups(){
+        return server.getPickups();
+    }
+    public static Text3D getText3D(int id){
+        return server.getText3D(id);
+    }
+    public static List<Text3D> getText3Ds(){
+        return server.getText3Ds();
     }
     public static WorldObject getObject(int id){
         return server.getObject(id);

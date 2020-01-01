@@ -1,7 +1,7 @@
 package net.onfirenetwork.onsetjava.jni;
 
 import net.onfirenetwork.onsetjava.entity.*;
-import net.onfirenetwork.onsetjava.jni.entity.DoorJNI;
+import net.onfirenetwork.onsetjava.jni.entity.*;
 import net.onfirenetwork.onsetjava.jni.plugin.PluginManagerJNI;
 import net.onfirenetwork.onsetjava.plugin.CommandExecutor;
 import net.onfirenetwork.onsetjava.Dimension;
@@ -9,9 +9,6 @@ import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.Server;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
-import net.onfirenetwork.onsetjava.jni.entity.NPCJNI;
-import net.onfirenetwork.onsetjava.jni.entity.VehicleJNI;
-import net.onfirenetwork.onsetjava.jni.entity.WorldObjectJNI;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,10 +31,6 @@ public class ServerJNI implements Server {
         if(!pluginFolder.exists())
             pluginFolder.mkdir();
         instance.pluginManager.load(pluginFolder);
-        instance.registerCommand("java", (player, name, args) -> {
-            player.sendMessage("This is a debugging command!");
-            return true;
-        });
     }
 
     public static Object[] callGlobal(String name, Object... args){
@@ -132,6 +125,34 @@ public class ServerJNI implements Server {
         return new WorldObjectJNI(id);
     }
 
+    public Pickup getPickup(int id){
+        if(!((Boolean) callGlobal("IsValidPickup", id)[0]))
+            return null;
+        return new PickupJNI(id);
+    }
+
+    public List<Pickup> getPickups(){
+        List<Pickup> pickups = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllPickups")[0]).values()){
+            pickups.add(new PickupJNI(id));
+        }
+        return pickups;
+    }
+
+    public Text3D getText3D(int id){
+        if(!((Boolean) callGlobal("IsValidText3D", id)[0]))
+            return null;
+        return new Text3DJNI(id);
+    }
+
+    public List<Text3D> getText3Ds(){
+        List<Text3D> texts = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllText3D")[0]).values()){
+            texts.add(new Text3DJNI(id));
+        }
+        return texts;
+    }
+
     public WorldObject createObject(double x, double y, double z, int model){
         return new WorldObjectJNI((Integer) callGlobal("CreateObject", model, x, y, z)[0]);
     }
@@ -146,6 +167,14 @@ public class ServerJNI implements Server {
 
     public Door createDoor(double x, double y, double z, double heading, int model, boolean enableOpen){
         return new DoorJNI((Integer) callGlobal("CreateDoor", model, x, y, z, heading, enableOpen)[0]);
+    }
+
+    public Pickup createPickup(double x, double y, double z, int model) {
+        return new PickupJNI((Integer) callGlobal("CreatePickup", model, x, y, z)[0]);
+    }
+
+    public Text3D createText3D(String text, double size, double x, double y, double z, double rx, double ry, double rz) {
+        return new Text3DJNI((Integer) callGlobal("CreateText3D", text, size, x, y, z, rx, ry, rz)[0]);
     }
 
     public void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion) {
