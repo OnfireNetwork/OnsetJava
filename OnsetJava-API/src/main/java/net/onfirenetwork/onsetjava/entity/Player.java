@@ -5,8 +5,11 @@ import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.data.Weapon;
+import net.onfirenetwork.onsetjava.enums.Animation;
+import net.onfirenetwork.onsetjava.enums.PlayerState;
+import net.onfirenetwork.onsetjava.enums.WeaponModel;
 
-public interface Player extends HitEntity {
+public interface Player extends HitEntity, PropertyEntity, AttachmentEntity {
 
     int getId();
     String getName();
@@ -56,11 +59,39 @@ public interface Player extends HitEntity {
         setWeapon(slot, weapon.getModel(), weapon.getAmmo(), equip, loaded);
     }
     void setWeapon(int slot, int model, int ammo, boolean equip, boolean loaded);
+    void setWeaponSlot(int slot);
+    int getWeaponSlot();
+    default void setWeaponStat(WeaponModel model, String stat, Object value){
+        setWeaponStat(model.id(), stat, value);
+    }
+    void setWeaponStat(int model, String stat, Object value);
+    boolean isDead();
+    void setRespawnTime(int time);
+    int getRespawnTime();
+    int getPing();
+    String getGUID();
+    int getGameVersion();
+    PlayerState getState();
+    void setParachute(boolean parachute);
+    void setHealth(double health);
+    double getHealth();
+    void setArmor(double armor);
+    double getArmor();
+    String getAddress();
+    String getLocale();
+    default void setAnimation(Animation animation){
+        setAnimation(animation.name());
+    }
+    void setAnimation(String animation);
+    void setHeadSize(double size);
+    double getHeadSize();
     void enterVehicle(Vehicle vehicle);
     void enterVehicle(Vehicle vehicle, int seat);
     void exitVehicle();
     Vehicle getVehicle();
     int getVehicleSeat();
+    void setSpectator(boolean spectator);
     void callRemoteEvent(String name, Object... args);
     void execute(String script);
+
 }

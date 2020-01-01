@@ -64,5 +64,22 @@ public interface Server {
         return createDoor(x, y, z, heading, model, false);
     }
     Door createDoor(double x, double y, double z, double heading, int model, boolean enableOpen);
-
+    default void createExplosion(int dimension, Vector location, int type){
+        createExplosion(dimension, location.getX(), location.getY(), location.getZ(), type);
+    }
+    default void createExplosion(int dimension, double x, double y, double z, int type){
+        createExplosion(dimension, x, y, z, type, true);
+    }
+    default void createExplosion(int dimension, Vector location, int type, boolean soundExplosion){
+        createExplosion(dimension, location.getX(), location.getY(), location.getZ(), type, soundExplosion);
+    }
+    void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion);
+    default void createExplosion(int dimension, Vector location, int type, boolean soundExplosion, double camShakeRadius){
+        createExplosion(dimension, location.getX(), location.getY(), location.getZ(), type, soundExplosion, camShakeRadius);
+    }
+    void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion, double camShakeRadius);
+    default void createExplosion(int dimension, Vector location, int type, boolean soundExplosion, double camShakeRadius, double radialForce){
+        createExplosion(dimension, location.getX(), location.getY(), location.getZ(), type, soundExplosion, camShakeRadius, radialForce);
+    }
+    void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion, double camShakeRadius, double radialForce);
 }

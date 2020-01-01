@@ -1,7 +1,5 @@
 package net.onfirenetwork.onsetjava.jni;
 
-import net.onfirenetwork.onsetjava.data.Location;
-import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.entity.*;
 import net.onfirenetwork.onsetjava.jni.entity.DoorJNI;
 import net.onfirenetwork.onsetjava.jni.plugin.PluginManagerJNI;
@@ -148,6 +146,18 @@ public class ServerJNI implements Server {
 
     public Door createDoor(double x, double y, double z, double heading, int model, boolean enableOpen){
         return new DoorJNI((Integer) callGlobal("CreateDoor", model, x, y, z, heading, enableOpen)[0]);
+    }
+
+    public void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion) {
+        callGlobal("CreateExplosion", type, x, y, z, dimension, soundExplosion);
+    }
+
+    public void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion, double camShakeRadius) {
+        callGlobal("CreateExplosion", type, x, y, z, dimension, soundExplosion, camShakeRadius);
+    }
+
+    public void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion, double camShakeRadius, double radialForce) {
+        callGlobal("CreateExplosion", type, x, y, z, dimension, soundExplosion, camShakeRadius, radialForce);
     }
 
     public void broadcast(String message){

@@ -5,6 +5,8 @@ import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.data.Weapon;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.Vehicle;
+import net.onfirenetwork.onsetjava.enums.AttachType;
+import net.onfirenetwork.onsetjava.enums.PlayerState;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
 
 public class PlayerJNI implements Player {
@@ -115,6 +117,86 @@ public class PlayerJNI implements Player {
         ServerJNI.callGlobal("SetPlayerWeapon", id, model, ammo, equip, slot, loaded);
     }
 
+    public void setWeaponSlot(int slot){
+        ServerJNI.callGlobal("EquipPlayerWeaponSlot", id, slot);
+    }
+
+    public int getWeaponSlot(){
+        return (Integer) ServerJNI.callGlobal("GetPlayerEquippedWeaponSlot", id)[0];
+    }
+
+    public void setWeaponStat(int model, String stat, Object value){
+        ServerJNI.callGlobal("SetPlayerWeaponStat", id, model, stat, value);
+    }
+
+    public boolean isDead(){
+        return (Boolean) ServerJNI.callGlobal("IsPlayerDead", id)[0];
+    }
+
+    public void setRespawnTime(int time){
+        ServerJNI.callGlobal("SetPlayerRespawnTime", id, time);
+    }
+
+    public int getRespawnTime(){
+        return (Integer) ServerJNI.callGlobal("GetPlayerRespawnTime", id)[0];
+    }
+
+    public int getPing(){
+        return (Integer) ServerJNI.callGlobal("GetPlayerPing", id)[0];
+    }
+
+    public String getGUID(){
+        return (String) ServerJNI.callGlobal("GetPlayerGUID", id)[0];
+    }
+
+    public int getGameVersion(){
+        return (Integer) ServerJNI.callGlobal("GetPlayerGameVersion", id)[0];
+    }
+
+    public PlayerState getState(){
+        return PlayerState.get((Integer) ServerJNI.callGlobal("GetPlayerState", id)[0]);
+    }
+
+    public void setParachute(boolean parachute){
+        ServerJNI.callGlobal("AttachPlayerParachute", id, parachute);
+    }
+
+    public void setHealth(double health){
+        ServerJNI.callGlobal("SetPlayerHealth", id, health);
+    }
+
+    public double getHealth(){
+        return (Double) ServerJNI.callGlobal("GetPlayerHealth", id)[0];
+    }
+
+    public void setArmor(double armor){
+        ServerJNI.callGlobal("SetPlayerArmor", id, armor);
+    }
+
+    public double getArmor(){
+        return (Double) ServerJNI.callGlobal("GetPlayerArmor", id)[0];
+    }
+
+    public String getAddress(){
+        return (String) ServerJNI.callGlobal("GetPlayerIP", id)[0];
+    }
+
+    public String getLocale(){
+        return (String) ServerJNI.callGlobal("GetPlayerLocale", id)[0];
+    }
+
+    public void setAnimation(String animation){
+        ServerJNI.callGlobal("SetPlayerAnimation", id, animation);
+    }
+
+    public void setHeadSize(double size){
+        ServerJNI.callGlobal("SetPlayerHeadSize", id, size);
+    }
+
+    public double getHeadSize(){
+        return (Double) ServerJNI.callGlobal("GetPlayerHeadSize", id)[0];
+    }
+
     public void enterVehicle(Vehicle vehicle){
         ServerJNI.callGlobal("SetPlayerInVehicle", id, vehicle.getId());
     }
@@ -138,6 +220,10 @@ public class PlayerJNI implements Player {
         return (Integer) ServerJNI.callGlobal("GetPlayerVehicleSeat", id)[0];
     }
 
+    public void setSpectator(boolean spectator){
+        ServerJNI.callGlobal("SetPlayerSpectate", id, spectator);
+    }
+
     public void callRemoteEvent(String name, Object... args){
         Object[] a = new Object[args.length+2];
         a[0] = id;
@@ -150,6 +236,18 @@ public class PlayerJNI implements Player {
 
     public void execute(String script){
         ServerJNI.callGlobal("RunClientScript", id, script);
+    }
+
+    public void setProperty(String key, Object value, boolean sync){
+        ServerJNI.callGlobal("SetPlayerPropertyValue", id, key, value, sync);
+    }
+
+    public Object getProperty(String key){
+        return ServerJNI.callGlobal("GetPlayerPropertyValue", id, key)[0];
+    }
+
+    public AttachType getAttachType(){
+        return AttachType.PLAYER;
     }
 
 }

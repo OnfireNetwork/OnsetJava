@@ -2,8 +2,9 @@ package net.onfirenetwork.onsetjava.entity;
 
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
+import net.onfirenetwork.onsetjava.data.Vector;
 
-public interface Door extends HitEntity {
+public interface Door extends HitEntity, PropertyEntity {
     int getId();
     int getDimensionId();
     void setDimension(int dimension);
@@ -21,4 +22,8 @@ public interface Door extends HitEntity {
         setOpen(false);
     }
     boolean isOpen();
+    Vector getLocation();
+    void setLocation(Vector location);
+    int getModel();
+    void destroy();
 }
