@@ -3,6 +3,7 @@ package net.onfirenetwork.onsetjava.jni.entity;
 import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.entity.AttachmentEntity;
+import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.WorldObject;
 import net.onfirenetwork.onsetjava.enums.AttachType;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
@@ -112,5 +113,8 @@ public class WorldObjectJNI implements WorldObject {
     }
     public void setRotateAxis(double x, double y, double z){
         ServerJNI.callGlobal("SetObjectRotateAxis", id, x, y, z);
+    }
+    public boolean isStreamed(Player player){
+        return (Boolean) ServerJNI.callGlobal("IsObjectStreamedIn", player.getId(), id)[0];
     }
 }

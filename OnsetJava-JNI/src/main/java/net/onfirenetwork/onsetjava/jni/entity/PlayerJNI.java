@@ -1,6 +1,8 @@
 package net.onfirenetwork.onsetjava.jni.entity;
 
+import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Location;
+import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.data.Weapon;
 import net.onfirenetwork.onsetjava.entity.Player;
@@ -8,6 +10,11 @@ import net.onfirenetwork.onsetjava.entity.Vehicle;
 import net.onfirenetwork.onsetjava.enums.AttachType;
 import net.onfirenetwork.onsetjava.enums.PlayerState;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
+import net.onfirenetwork.onsetjava.jni.data.NetworkStatsJNI;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class PlayerJNI implements Player {
 
@@ -248,6 +255,26 @@ public class PlayerJNI implements Player {
 
     public AttachType getAttachType(){
         return AttachType.PLAYER;
+    }
+
+    public boolean isStreamed(Player player){
+        return (Boolean) ServerJNI.callGlobal("IsPlayerStreamedIn", player.getId(), id)[0];
+    }
+
+    public NetworkStats getNetworkStats(){
+        return new NetworkStatsJNI((Map<String, Object>) ServerJNI.callGlobal("GetPlayerNetworkStats", id)[0]);
+    }
+
+    public List<Player> getStreamedPlayers(){
+        List<Player> players = new ArrayList<>();
+        Map<Integer, Integer> table = (Map<Integer, Integer>) ServerJNI.callGlobal("GetStreamedPlayersForPlayer", id)[0];
+        for(int id : table.values()){
+            Player player = Onset.getPlayer(id);
+            if(player != null){
+                players.add(player);
+            }
+        }
+        return players;
     }
 
 }

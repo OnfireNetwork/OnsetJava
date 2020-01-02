@@ -3,11 +3,14 @@ package net.onfirenetwork.onsetjava.entity;
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Location;
+import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.data.Weapon;
 import net.onfirenetwork.onsetjava.enums.Animation;
 import net.onfirenetwork.onsetjava.enums.PlayerState;
 import net.onfirenetwork.onsetjava.enums.WeaponModel;
+
+import java.util.List;
 
 public interface Player extends HitEntity, PropertyEntity, AttachmentEntity {
 
@@ -93,5 +96,7 @@ public interface Player extends HitEntity, PropertyEntity, AttachmentEntity {
     void setSpectator(boolean spectator);
     void callRemoteEvent(String name, Object... args);
     void execute(String script);
-
+    boolean isStreamed(Player player);
+    NetworkStats getNetworkStats();
+    List<Player> getStreamedPlayers();
 }

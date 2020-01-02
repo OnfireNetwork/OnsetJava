@@ -4,6 +4,7 @@ import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Color;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.Vector;
+import net.onfirenetwork.onsetjava.entity.Door;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.Vehicle;
 import net.onfirenetwork.onsetjava.enums.AttachType;
@@ -96,6 +97,10 @@ public class VehicleJNI implements Vehicle {
     public void setAngularVelocity(double x, double y, double z, boolean reset){
         ServerJNI.callGlobal("SetVehicleAngularVelocity", id, x, y, z, reset);
     }
+    public Vector getVelocity() {
+        Object[] coords = ServerJNI.callGlobal("GetVehicleVelocity", id);
+        return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
+    }
     public void setHood(double ratio){
         ServerJNI.callGlobal("SetVehicleHoodRatio", id, ratio);
     }
@@ -150,5 +155,8 @@ public class VehicleJNI implements Vehicle {
     }
     public AttachType getAttachType(){
         return AttachType.VEHICLE;
+    }
+    public boolean isStreamed(Player player){
+        return (Boolean) ServerJNI.callGlobal("IsVehicleStreamedIn", player.getId(), id)[0];
     }
 }

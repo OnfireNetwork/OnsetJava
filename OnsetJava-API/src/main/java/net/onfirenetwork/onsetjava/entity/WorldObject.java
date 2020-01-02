@@ -48,5 +48,6 @@ public interface WorldObject extends HitEntity, PropertyEntity, AttachmentEntity
         setRotateAxis(rotation.getX(), rotation.getY(), rotation.getZ());
     }
     void setRotateAxis(double x, double y, double z);
+    boolean isStreamed(Player player);
     void destroy();
 }

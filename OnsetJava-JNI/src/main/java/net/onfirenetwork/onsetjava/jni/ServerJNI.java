@@ -1,6 +1,9 @@
 package net.onfirenetwork.onsetjava.jni;
 
+import lua.LuaFunction;
+import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.entity.*;
+import net.onfirenetwork.onsetjava.jni.data.NetworkStatsJNI;
 import net.onfirenetwork.onsetjava.jni.entity.*;
 import net.onfirenetwork.onsetjava.jni.plugin.PluginManagerJNI;
 import net.onfirenetwork.onsetjava.plugin.CommandExecutor;
@@ -12,7 +15,9 @@ import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.EventListener;
 
 import java.io.File;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +48,7 @@ public class ServerJNI implements Server {
     }
 
     private String packageName;
+    private Map<String, Map<String, LuaFunction>> importPackageMap = new HashMap<>();
     private List<Player> players = new ArrayList<>();
     public PackageBus packageBus = new PackageBus();
     public PluginManagerJNI pluginManager = new PluginManagerJNI();
@@ -220,6 +226,53 @@ public class ServerJNI implements Server {
 
     public PluginManager getPluginManager(){
         return pluginManager;
+    }
+
+    public void callLuaEvent(String name, Object... args){
+        Object[] a = new Object[args.length + 1];
+        a[0] = name;
+        for(int i=0; i<args.length; i++){
+            a[i+1] = args[i];
+        }
+        callGlobal("CallEvent", a);
+    }
+
+    private Map<String, LuaFunction> importLuaPackageMap(String name){
+        if(!importPackageMap.containsKey(name)){
+            importPackageMap.put(name, (Map<String, LuaFunction>) callGlobal("ImportPackage", name)[0]);
+        }
+        return importPackageMap.get(name);
+    }
+
+    public <T> T importLuaPackage(String name, Class<T> interfaceClass){
+        Map<String, LuaFunction> functionMap = importLuaPackageMap(name);
+        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[]{interfaceClass}, (proxy, method, args) -> {
+            String methodName = method.getName();
+            if(methodName.equals("callFunction")){
+                LuaFunction fn = functionMap.get(args[0]);
+                if(fn == null)
+                    return null;
+                Object[] a = new Object[args.length-1];
+                for(int i=0; i<a.length; i++){
+                    a[i] = args[i+1];
+                }
+                return fn.call(a);
+            }
+            if(methodName.equals("closePackage")){
+                for(String n : functionMap.keySet()){
+                    functionMap.get(n).close();
+                }
+                return null;
+            }
+            LuaFunction fn = functionMap.get(methodName);
+            if(fn == null)
+                return null;
+            return fn.call(args)[0];
+        });
+    }
+
+    public NetworkStats getNetworkStats(){
+        return new NetworkStatsJNI((Map<String, Object>) ServerJNI.callGlobal("GetNetworkStats")[0]);
     }
 
 }

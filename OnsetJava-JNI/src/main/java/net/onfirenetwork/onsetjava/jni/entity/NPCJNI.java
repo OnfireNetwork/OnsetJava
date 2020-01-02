@@ -91,4 +91,7 @@ public class NPCJNI implements NPC {
     public void follow(Vehicle vehicle, double speed){
         ServerJNI.callGlobal("SetNPCFollowVehicle", id, vehicle.getId(), speed);
     }
+    public boolean isStreamed(Player player){
+        return (Boolean) ServerJNI.callGlobal("IsNPCStreamedIn", player.getId(), id)[0];
+    }
 }

@@ -1,6 +1,7 @@
 package net.onfirenetwork.onsetjava;
 
 import net.onfirenetwork.onsetjava.data.Location;
+import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.entity.*;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
@@ -31,6 +32,7 @@ public interface Server {
     Text3D getText3D(int id);
     void registerCommand(String name, CommandExecutor executor);
     void callEvent(Event event);
+    <T> T importLuaPackage(String name, Class<T> interfaceClass);
     Dimension getDimension(int id);
     void broadcast(String message);
     void print(Object value);
@@ -96,4 +98,5 @@ public interface Server {
         createExplosion(dimension, location.getX(), location.getY(), location.getZ(), type, soundExplosion, camShakeRadius, radialForce);
     }
     void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion, double camShakeRadius, double radialForce);
+    NetworkStats getNetworkStats();
 }

@@ -58,6 +58,7 @@ public interface Vehicle extends HitEntity, PropertyEntity, AttachmentEntity {
         setAngularVelocity(velocity.getX(), velocity.getY(), velocity.getZ(), reset);
     }
     void setAngularVelocity(double x, double y, double z, boolean reset);
+    Vector getVelocity();
     void setHood(double ratio);
     double getHood();
     void setTrunk(double ratio);
@@ -70,5 +71,6 @@ public interface Vehicle extends HitEntity, PropertyEntity, AttachmentEntity {
     void setDamage(int part, double damage);
     double getDamage(int part);
     int getGear();
+    boolean isStreamed(Player player);
     void destroy();
 }
