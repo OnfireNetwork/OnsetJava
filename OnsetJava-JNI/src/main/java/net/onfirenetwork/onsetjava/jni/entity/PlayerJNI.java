@@ -1,6 +1,7 @@
 package net.onfirenetwork.onsetjava.jni.entity;
 
 import net.onfirenetwork.onsetjava.Onset;
+import net.onfirenetwork.onsetjava.clientdsl.LF;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.data.Vector;
@@ -243,6 +244,10 @@ public class PlayerJNI implements Player {
 
     public void execute(String script){
         ServerJNI.callGlobal("RunClientScript", id, script);
+    }
+
+    public void execute(LF script){
+        execute(script.toCode(true));
     }
 
     public void setProperty(String key, Object value, boolean sync){

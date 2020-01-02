@@ -2,6 +2,7 @@ package net.onfirenetwork.onsetjava.entity;
 
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
+import net.onfirenetwork.onsetjava.clientdsl.LF;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.data.Vector;
@@ -96,6 +97,7 @@ public interface Player extends HitEntity, PropertyEntity, AttachmentEntity {
     void setSpectator(boolean spectator);
     void callRemoteEvent(String name, Object... args);
     void execute(String script);
+    void execute(LF script);
     boolean isStreamed(Player player);
     NetworkStats getNetworkStats();
     List<Player> getStreamedPlayers();

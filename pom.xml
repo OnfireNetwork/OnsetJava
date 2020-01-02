@@ -11,6 +11,7 @@
     <modules>
         <module>OnsetJava-API</module>
         <module>OnsetJava-JNI</module>
+        <module>OnsetJava-ClientDSL</module>
     </modules>
 
 </project>

@@ -9,17 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>OnsetJava-API</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>net.onfirenetwork</groupId>
-            <artifactId>OnsetJava-ClientDSL</artifactId>
-            <version>0.1</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
+    <artifactId>OnsetJava-ClientDSL</artifactId>
     <build>
         <plugins>
             <plugin>
