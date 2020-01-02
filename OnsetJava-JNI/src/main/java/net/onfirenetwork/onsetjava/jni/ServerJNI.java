@@ -15,6 +15,7 @@ import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.EventListener;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,10 +38,6 @@ public class ServerJNI implements Server {
         if(!pluginFolder.exists())
             pluginFolder.mkdir();
         instance.pluginManager.load(pluginFolder);
-        instance.registerCommand("test", (player, name, args) -> {
-            instance.createPickup(player.getLocation(), 2);
-            return true;
-        });
     }
 
     public static Object[] callGlobal(String name, Object... args){
@@ -237,15 +234,19 @@ public class ServerJNI implements Server {
         callGlobal("CallEvent", a);
     }
 
-    private Map<String, LuaFunction> importLuaPackageMap(String name){
+    private Map<String, LuaFunction> importLuaPackageMap(String name, List<String> functions){
         if(!importPackageMap.containsKey(name)){
-            importPackageMap.put(name, (Map<String, LuaFunction>) callGlobal("ImportPackage", name)[0]);
+            importPackageMap.put(name, (Map<String, LuaFunction>) callGlobal("ImportPackageToJava", name, functions)[0]);
         }
         return importPackageMap.get(name);
     }
 
     public <T> T importLuaPackage(String name, Class<T> interfaceClass){
-        Map<String, LuaFunction> functionMap = importLuaPackageMap(name);
+        List<String> functions = new ArrayList<>();
+        for(Method m : interfaceClass.getMethods()){
+            functions.add(m.getName());
+        }
+        Map<String, LuaFunction> functionMap = importLuaPackageMap(name, functions);
         return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[]{interfaceClass}, (proxy, method, args) -> {
             String methodName = method.getName();
             if(methodName.equals("callFunction")){
@@ -265,9 +266,17 @@ public class ServerJNI implements Server {
                 return null;
             }
             LuaFunction fn = functionMap.get(methodName);
-            if(fn == null)
+            if(fn == null) {
                 return null;
-            return fn.call(args)[0];
+            }
+            Object[] ret = fn.call(args);
+            if(ret.length > 0){
+                if(ret.length == 1){
+                    return ret[0];
+                }
+                return ret;
+            }
+            return null;
         });
     }
 
