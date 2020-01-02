@@ -1,6 +1,7 @@
 package net.onfirenetwork.onsetjava.jni;
 
 import net.onfirenetwork.onsetjava.entity.Player;
+import net.onfirenetwork.onsetjava.plugin.ExportFunction;
 import net.onfirenetwork.onsetjava.plugin.event.Cancellable;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.player.PlayerRemoteEvent;
@@ -56,6 +57,9 @@ public class LuaAdapter {
         if(player == null)
             return;
         ServerJNI.getInstance().packageBus.dispatchCommand(player, name, cmdArgs);
+    }
+    public static Object callExportFunction(String name, Map<Integer, Object> argsMap){
+        return ServerJNI.getInstance().packageBus.callExportFunction(name, argsMap);
     }
 
 }

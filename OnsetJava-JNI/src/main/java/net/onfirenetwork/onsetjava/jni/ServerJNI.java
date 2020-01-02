@@ -10,6 +10,7 @@ import net.onfirenetwork.onsetjava.plugin.CommandExecutor;
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.Server;
+import net.onfirenetwork.onsetjava.plugin.ExportFunction;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.EventListener;
@@ -278,6 +279,10 @@ public class ServerJNI implements Server {
             }
             return null;
         });
+    }
+
+    public void addFunctionExport(String name, ExportFunction function){
+        packageBus.addFunctionExport(name, function);
     }
 
     public NetworkStats getNetworkStats(){

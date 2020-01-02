@@ -4,6 +4,7 @@ import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.entity.*;
+import net.onfirenetwork.onsetjava.plugin.ExportFunction;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.CommandExecutor;
@@ -33,6 +34,7 @@ public interface Server {
     void registerCommand(String name, CommandExecutor executor);
     void callEvent(Event event);
     <T> T importLuaPackage(String name, Class<T> interfaceClass);
+    void addFunctionExport(String name, ExportFunction function);
     Dimension getDimension(int id);
     void broadcast(String message);
     void print(Object value);

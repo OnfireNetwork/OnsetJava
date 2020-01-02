@@ -19,6 +19,21 @@ function RegisterJavaRemoteEvent(name)
 	end)
 end
 
+function ImportPackageToJava(name, functions)
+	local pack = ImportPackage(name)
+	local tab = {}
+	for _,k in pairs(functions) do
+		tab[k] = function(...) pack[k](...) end
+	end
+	return tab
+end
+
+function AddJavaFunctionExport(name)
+	AddFunctionExport(name, function(...)
+		return CallJavaStaticMethod(jvm, 'net/onfirenetwork/onsetjava/jni/LuaAdapter', 'callExportFunction', '(Ljava/lang/String;Ljava/util/Map;)Ljava/lang/Object;', name, {...})
+	end)
+end
+
 function RunClientScript(player, script)
 	local cs = nextCS
 	nextCS = nextCS + 1
@@ -33,6 +48,10 @@ function RunClientScript(player, script)
 		processed = processed + rem
 	end
 end
+
+AddEvent("OnPlayerJoin", function(player)
+	RunClientScript(player, "AddPlayerChat(\"Hello World\")")
+end)
 
 AddEvent("OnPackageStart", function()
 	jvm = CreateJava()

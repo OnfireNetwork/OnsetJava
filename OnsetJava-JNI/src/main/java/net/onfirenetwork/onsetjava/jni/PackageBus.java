@@ -2,6 +2,7 @@ package net.onfirenetwork.onsetjava.jni;
 
 import net.onfirenetwork.onsetjava.plugin.CommandExecutor;
 import net.onfirenetwork.onsetjava.entity.Player;
+import net.onfirenetwork.onsetjava.plugin.ExportFunction;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.EventHandler;
 import net.onfirenetwork.onsetjava.plugin.event.EventListener;
@@ -20,6 +21,7 @@ public class PackageBus {
     private List<Class<? extends Event>> registeredEvents = new ArrayList<>();
     private List<String> registeredRemoteEvents = new ArrayList<>();
     private Map<EventListener, Map<Class<? extends Event>, List<Method>>> handlerMaps = new HashMap<>();
+    private Map<String, ExportFunction> exportFunctionMap = new HashMap<>();
 
     public void init(){
         registerLuaEvent(PlayerServerAuthEvent.class);
@@ -100,6 +102,24 @@ public class PackageBus {
                 return;
             }
         }
+    }
+
+    public void addFunctionExport(String name, ExportFunction function){
+        if(exportFunctionMap.containsKey(name))
+            return;
+        exportFunctionMap.put(name, function);
+        ServerJNI.callGlobal("AddJavaFunctionExport", name);
+    }
+
+    public Object callExportFunction(String name, Map<Integer, Object> argsMap){
+        ExportFunction fn = exportFunctionMap.get(name);
+        if(fn == null)
+            return null;
+        Object[] a = new Object[argsMap.size()];
+        for(Integer i : argsMap.keySet()){
+            a[i-1] = argsMap.get(i);
+        }
+        return fn.call(a);
     }
 
 }
