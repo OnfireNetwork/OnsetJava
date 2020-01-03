@@ -13,7 +13,6 @@ import net.onfirenetwork.onsetjava.Server;
 import net.onfirenetwork.onsetjava.plugin.ExportFunction;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
-import net.onfirenetwork.onsetjava.plugin.event.EventListener;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -215,7 +214,7 @@ public class ServerJNI implements Server {
         packageBus.registerCommand(name, executor);
     }
 
-    public void registerListener(EventListener listener){
+    public void registerListener(Object listener){
         packageBus.registerListener(listener);
     }
 

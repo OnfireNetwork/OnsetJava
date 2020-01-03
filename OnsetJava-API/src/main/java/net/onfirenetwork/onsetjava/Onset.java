@@ -2,7 +2,6 @@ package net.onfirenetwork.onsetjava;
 
 import net.onfirenetwork.onsetjava.entity.*;
 import net.onfirenetwork.onsetjava.plugin.CommandExecutor;
-import net.onfirenetwork.onsetjava.plugin.event.EventListener;
 
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class Onset {
     public static void registerCommand(String name, CommandExecutor executor){
         server.registerCommand(name, executor);
     }
-    public static void registerListener(EventListener listener){
+    public static void registerListener(Object listener){
         server.registerListener(listener);
     }
 }

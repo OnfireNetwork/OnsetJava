@@ -5,7 +5,6 @@ import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.plugin.ExportFunction;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.EventHandler;
-import net.onfirenetwork.onsetjava.plugin.event.EventListener;
 import net.onfirenetwork.onsetjava.plugin.event.player.PlayerQuitEvent;
 import net.onfirenetwork.onsetjava.plugin.event.player.PlayerServerAuthEvent;
 
@@ -20,7 +19,7 @@ public class PackageBus {
     private Map<String, List<CommandExecutor>> commandMap = new HashMap<>();
     private List<Class<? extends Event>> registeredEvents = new ArrayList<>();
     private List<String> registeredRemoteEvents = new ArrayList<>();
-    private Map<EventListener, Map<Class<? extends Event>, List<Method>>> handlerMaps = new HashMap<>();
+    private Map<Object, Map<Class<? extends Event>, List<Method>>> handlerMaps = new HashMap<>();
     private Map<String, ExportFunction> exportFunctionMap = new HashMap<>();
 
     public void init(){
@@ -47,7 +46,7 @@ public class PackageBus {
 
     public void callEvent(Event event){
         Class<? extends Event> eventClass = event.getClass();
-        for(EventListener listener : handlerMaps.keySet()){
+        for(Object listener : handlerMaps.keySet()){
             if(!handlerMaps.get(listener).containsKey(eventClass)) {
                 return;
             }
@@ -61,7 +60,7 @@ public class PackageBus {
         }
     }
 
-    public void registerListener(EventListener listener){
+    public void registerListener(Object listener){
         Map<Class<? extends Event>, List<Method>> handlerMap = new HashMap<>();
         for(Method method : listener.getClass().getMethods()){
             if(method.getParameterCount()!=1)
