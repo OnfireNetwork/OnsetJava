@@ -1,11 +1,12 @@
 package net.onfirenetwork.onsetjava.jni.plugin;
 
 import net.onfirenetwork.onsetjava.Onset;
-import net.onfirenetwork.onsetjava.plugin.Plugin;
 import net.onfirenetwork.onsetjava.plugin.PluginInfo;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -15,9 +16,9 @@ import java.util.jar.JarFile;
 
 public class PluginManagerJNI implements PluginManager {
 
-    private List<Plugin> plugins = new ArrayList<>();
-    private Map<Plugin, PluginInfo> infos = new HashMap<>();
-    private Map<Plugin, File> files = new HashMap<>();
+    private List<Object> plugins = new ArrayList<>();
+    private Map<Object, PluginInfo> infos = new HashMap<>();
+    private Map<Object, File> files = new HashMap<>();
 
     public void load(File pluginFolder) {
         List<File> pluginFiles = new ArrayList<>();
@@ -37,23 +38,23 @@ public class PluginManagerJNI implements PluginManager {
             Onset.print("Found " + pluginFiles.size() + " Plugin Files!");
             for (File file : pluginFiles) {
                 try {
-                    Class<Plugin> mainClass = null;
+                    Class<?> mainClass = null;
                     JarFile jf = new JarFile(file);
                     Enumeration<JarEntry> en = jf.entries();
                     while (en.hasMoreElements()) {
                         JarEntry element = en.nextElement();
                         if (element.getName().endsWith(".class")) {
                             Class<?> clazz = classLoader.loadClass(element.getName().replace("/", ".").substring(0, element.getName().length() - 6));
-                            if (Arrays.asList(clazz.getInterfaces()).contains(Plugin.class)) {
-                                mainClass = (Class<Plugin>) clazz;
+                            if (clazz.isAnnotationPresent(PluginInfo.class)) {
+                                mainClass = clazz;
                             }
                         }
                     }
                     if (mainClass != null) {
-                        Plugin instance = mainClass.getConstructor().newInstance();
+                        Object instance = mainClass.getConstructor().newInstance();
                         plugins.add(instance);
                         files.put(instance, file);
-                        infos.put(instance, instance.info());
+                        infos.put(instance, mainClass.getAnnotationsByType(PluginInfo.class)[0]);
                     }
                 } catch (Exception ex) {
                     Onset.print("Failed to load '" + file.getName() + "'!");
@@ -64,12 +65,12 @@ public class PluginManagerJNI implements PluginManager {
         int lastSize = -1;
         List<String> loaded = new ArrayList<>();
         while (loaded.size() < plugins.size() && lastSize != loaded.size()){
-            for(Plugin plugin : plugins){
+            for(Object plugin : plugins){
                 PluginInfo info = infos.get(plugin);
-                if(loaded.contains(info.getName()))
+                if(loaded.contains(info.name()))
                     continue;
                 boolean con = false;
-                for(String d : info.getDependencies()){
+                for(String d : info.depend()){
                     if(!loaded.contains(d)){
                         con = true;
                         break;
@@ -77,17 +78,19 @@ public class PluginManagerJNI implements PluginManager {
                 }
                 if(con)
                     continue;
-                plugin.onLoad();
-                loaded.add(info.getName());
+                try {
+                    plugin.getClass().getMethod("onLoad").invoke(plugin);
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+                loaded.add(info.name());
             }
             lastSize = loaded.size();
         }
         if(loaded.size() < plugins.size()){
-            for(Plugin plugin : new ArrayList<>(plugins)){
+            for(Object plugin : new ArrayList<>(plugins)){
                 PluginInfo info = infos.get(plugin);
-                if(!loaded.contains(info.getName())){
+                if(!loaded.contains(info.name())){
                     List<String> missing = new ArrayList<>();
-                    for(String d : info.getDependencies()){
+                    for(String d : info.depend()){
                         if(!loaded.contains(d)){
                             missing.add(d);
                         }
@@ -95,25 +98,41 @@ public class PluginManagerJNI implements PluginManager {
                     plugins.remove(plugin);
                     infos.remove(plugin);
                     files.remove(plugin);
-                    Onset.print("Could not load '"+info.getName()+"' (missing: "+String.join(", ", missing)+")");
+                    Onset.print("Could not load '"+info.name()+"' (missing: "+String.join(", ", missing)+")");
                 }
             }
         }
     }
 
-    public List<Plugin> getPlugins() {
+    public void enable(){
+        plugins.forEach(plugin -> {
+            try {
+                plugin.getClass().getMethod("onEnable").invoke(plugin);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+        });
+    }
+
+    public void disable(){
+        plugins.forEach(plugin -> {
+            try {
+                plugin.getClass().getMethod("onDisable").invoke(plugin);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+        });
+    }
+
+    public List<Object> getPlugins() {
         return plugins;
     }
 
-    public Plugin getPlugin(String name) {
-        return plugins.stream().filter(plugin -> plugin.info().getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    public Object getPlugin(String name) {
+        return plugins.stream().filter(plugin -> infos.get(plugin).name().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public File getFile(Plugin plugin) {
+    public File getFile(Object plugin) {
         return files.get(plugin);
     }
 
-    public PluginInfo getInfo(Plugin plugin){
+    public PluginInfo getInfo(Object plugin){
         return infos.get(plugin);
     }
 

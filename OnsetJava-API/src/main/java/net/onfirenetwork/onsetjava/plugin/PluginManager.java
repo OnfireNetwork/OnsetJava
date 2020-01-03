@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PluginManager {
 
-    List<Plugin> getPlugins();
-    Plugin getPlugin(String name);
+    List<Object> getPlugins();
+    Object getPlugin(String name);
 
 }

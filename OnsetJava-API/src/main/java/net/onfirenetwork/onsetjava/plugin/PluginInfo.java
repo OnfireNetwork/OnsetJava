@@ -1,37 +1,15 @@
 package net.onfirenetwork.onsetjava.plugin;
 
-public class PluginInfo {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    private String name;
-    private String version;
-    private String author;
-    private String[] dependencies;
-
-    public PluginInfo(String name, String version, String author, String... dependencies){
-        this.name = name;
-        this.version = version;
-        this.author = author;
-        this.dependencies = dependencies;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public String[] getDependencies() {
-        return dependencies;
-    }
-
-    public String toString() {
-        return name + " (" + version + " by " + author + ")";
-    }
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface PluginInfo {
+    String name();
+    String author() default "Unknown";
+    String version() default "1.0";
+    String[] depend() default {};
 }

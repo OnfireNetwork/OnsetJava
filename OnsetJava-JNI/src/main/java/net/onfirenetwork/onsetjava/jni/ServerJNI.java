@@ -39,6 +39,7 @@ public class ServerJNI implements Server {
         if(!pluginFolder.exists())
             pluginFolder.mkdir();
         instance.pluginManager.load(pluginFolder);
+        instance.pluginManager.enable();
     }
 
     public static Object[] callGlobal(String name, Object... args){
