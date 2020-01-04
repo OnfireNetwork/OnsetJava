@@ -2,6 +2,24 @@ package net.onfirenetwork.onsetjava.clientdsl;
 
 public class OCF extends LF {
 
+    public static Val WEB_VISIBLE = new Val("WEB_VISIBLE");
+    public static Val WEB_HITINVISIBLE = new Val("WEB_HITINVISIBLE");
+    public static Val WEB_HIDDEN = new Val("WEB_HIDDEN");
+    public static Val HIT_AIR = new Val("HIT_AIR");
+    public static Val HIT_PLAYER = new Val("HIT_PLAYER");
+    public static Val HIT_VEHICLE = new Val("HIT_VEHICLE");
+    public static Val HIT_NPC = new Val("HIT_NPC");
+    public static Val HIT_OBJECT = new Val("HIT_OBJECT");
+    public static Val HIT_LANDSCAPE = new Val("HIT_LANDSCAPE");
+    public static Val HIT_WATER = new Val("HIT_WATER");
+    public static Val INPUT_GAME = new Val("INPUT_GAME");
+    public static Val INPUT_GAMEANDUI = new Val("INPUT_GAMEANDUI");
+    public static Val INPUT_UI = new Val("INPUT_UI");
+    public static Val EDIT_NONE = new Val("EDIT_NONE");
+    public static Val EDIT_LOCATION = new Val("EDIT_LOCATION");
+    public static Val EDIT_ROTATION = new Val("EDIT_ROTATION");
+    public static Val EDIT_SCALE = new Val("EDIT_SCALE");
+
     public OCF(String... params){
         super(params);
     }
@@ -226,6 +244,98 @@ public class OCF extends LF {
 
     public void CopyToClipboard(Object... text){
         callVarArgs("CopyToClipboard", 0, concat(text));
+    }
+
+    public void EnableFirstPersonCamera(Object enable){
+        callVarArgs("EnableFirstPersonCamera", 0, enable);
+    }
+
+    public Val IsFirstPersonCamera(){
+        return call("IsFirstPersonCamera");
+    }
+
+    public Val GetDistance3D(Object x1, Object y1, Object z1, Object x2, Object y2, Object z2){
+        return call("GetDistance3D", x1, y1, z1, x2, y2, z2);
+    }
+
+    public Val Random(Object min, Object max){
+        return call("Random", min, max);
+    }
+
+    public Val RandomFloat(Object min, Object max){
+        return call("RandomFloat", min, max);
+    }
+
+    public Val[] LineTrace(Object sX, Object sY, Object sZ, Object eX, Object eY, Object eZ){
+        return callVarArgs("LineTrace", 9, sX, sY, sZ, eX, eY, eZ);
+    }
+
+    public Val[] LineTrace(Object sX, Object sY, Object sZ, Object eX, Object eY, Object eZ, Object complex){
+        return callVarArgs("LineTrace", 9, sX, sY, sZ, eX, eY, eZ, complex);
+    }
+
+    public void ConnectToServer(Object address, Object port){
+        callVarArgs("ConnectToServer", 0, address, port);
+    }
+
+    public void ConnectToServer(Object address, Object port, Object password){
+        callVarArgs("ConnectToServer", 0, address, port, password);
+    }
+
+    public Val[] ScreenToWorld(Object x, Object y){
+        return callVarArgs("ScreenToWorld", 7, x, y);
+    }
+
+    public void ShowMouseCursor(Object show){
+        callVarArgs("ShowMouseCursor", 0, show);
+    }
+
+    public void SetInputMode(Object mode){
+        callVarArgs("SetInputMode", 0, mode);
+    }
+
+    public void SetMouseLocation(Object x, Object y){
+        callVarArgs("SetMouseLocation", 0, x, y);
+    }
+
+    public Val[] GetScreenSize(){
+        return callVarArgs("GetScreenSize", 0);
+    }
+
+    public void SetTime(Object time){
+        callVarArgs("SetTime", 0, time);
+    }
+
+    public void SetWeather(Object weather){
+        callVarArgs("SetWeather", 0, weather);
+    }
+
+    public Val GetVehicleForwardSpeed(Object vehicle){
+        return call("GetVehicleForwardSpeed", vehicle);
+    }
+
+    public Val CreateSound(Object file){
+        return call("CreateSound", file);
+    }
+
+    public Val CreateSound3D(Object file, Object x, Object y, Object z, Object radius){
+        return call("CreateSound3D", file, x, y, z, radius);
+    }
+
+    public void DestroySound(Object sound){
+        callVarArgs("DestroySound", 0, sound);
+    }
+
+    public void SetSoundVolume(Object sound, Object volume){
+        callVarArgs("SetSoundVolume", 0, sound, volume);
+    }
+
+    public void SetSoundPitch(Object sound, Object pitch){
+        callVarArgs("SetSoundPitch", 0, sound, pitch);
+    }
+
+    public void SetObjectEditable(Object object, Object mode){
+        callVarArgs("SetObjectEditable", 0, object, mode);
     }
 
 }
