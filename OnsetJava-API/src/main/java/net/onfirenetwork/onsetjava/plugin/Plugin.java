@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface PluginInfo {
+public @interface Plugin {
     String name();
     String author() default "Unknown";
     String version() default "1.0";

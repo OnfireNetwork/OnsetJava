@@ -1,12 +1,11 @@
 package net.onfirenetwork.onsetjava.jni.plugin;
 
 import net.onfirenetwork.onsetjava.Onset;
-import net.onfirenetwork.onsetjava.plugin.PluginInfo;
+import net.onfirenetwork.onsetjava.plugin.Plugin;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -17,7 +16,7 @@ import java.util.jar.JarFile;
 public class PluginManagerJNI implements PluginManager {
 
     private List<Object> plugins = new ArrayList<>();
-    private Map<Object, PluginInfo> infos = new HashMap<>();
+    private Map<Object, Plugin> infos = new HashMap<>();
     private Map<Object, File> files = new HashMap<>();
 
     public void load(File pluginFolder) {
@@ -45,7 +44,7 @@ public class PluginManagerJNI implements PluginManager {
                         JarEntry element = en.nextElement();
                         if (element.getName().endsWith(".class")) {
                             Class<?> clazz = classLoader.loadClass(element.getName().replace("/", ".").substring(0, element.getName().length() - 6));
-                            if (clazz.isAnnotationPresent(PluginInfo.class)) {
+                            if (clazz.isAnnotationPresent(Plugin.class)) {
                                 mainClass = clazz;
                             }
                         }
@@ -54,7 +53,7 @@ public class PluginManagerJNI implements PluginManager {
                         Object instance = mainClass.getConstructor().newInstance();
                         plugins.add(instance);
                         files.put(instance, file);
-                        infos.put(instance, mainClass.getAnnotationsByType(PluginInfo.class)[0]);
+                        infos.put(instance, mainClass.getAnnotationsByType(Plugin.class)[0]);
                     }
                 } catch (Exception ex) {
                     Onset.print("Failed to load '" + file.getName() + "'!");
@@ -66,7 +65,7 @@ public class PluginManagerJNI implements PluginManager {
         List<String> loaded = new ArrayList<>();
         while (loaded.size() < plugins.size() && lastSize != loaded.size()){
             for(Object plugin : plugins){
-                PluginInfo info = infos.get(plugin);
+                Plugin info = infos.get(plugin);
                 if(loaded.contains(info.name()))
                     continue;
                 boolean con = false;
@@ -87,7 +86,7 @@ public class PluginManagerJNI implements PluginManager {
         }
         if(loaded.size() < plugins.size()){
             for(Object plugin : new ArrayList<>(plugins)){
-                PluginInfo info = infos.get(plugin);
+                Plugin info = infos.get(plugin);
                 if(!loaded.contains(info.name())){
                     List<String> missing = new ArrayList<>();
                     for(String d : info.depend()){
@@ -132,7 +131,7 @@ public class PluginManagerJNI implements PluginManager {
         return files.get(plugin);
     }
 
-    public PluginInfo getInfo(Object plugin){
+    public Plugin getInfo(Object plugin){
         return infos.get(plugin);
     }
 
