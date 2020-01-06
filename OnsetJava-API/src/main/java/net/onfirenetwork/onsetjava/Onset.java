@@ -61,4 +61,7 @@ public class Onset {
     public static void registerListener(Object listener){
         server.registerListener(listener);
     }
+    public static void registerRemoteEvent(String name){
+        server.registerRemoteEvent(name);
+    }
 }

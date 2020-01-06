@@ -44,7 +44,7 @@ public class LuaAdapter {
         Player player = ServerJNI.getInstance().getPlayer(playerId);
         if(player == null)
             return;
-        ServerJNI.getInstance().callEvent(new PlayerRemoteEvent(player, eventArgs));
+        ServerJNI.getInstance().callEvent(new PlayerRemoteEvent(player, name, eventArgs));
     }
     public static void luaCommand(String name, Map<Integer, Object> args){
         Object[] argsArray = tableArray(args);

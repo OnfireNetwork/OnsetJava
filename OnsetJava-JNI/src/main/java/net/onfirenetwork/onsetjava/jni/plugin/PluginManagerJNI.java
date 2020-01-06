@@ -43,6 +43,9 @@ public class PluginManagerJNI implements PluginManager {
                     while (en.hasMoreElements()) {
                         JarEntry element = en.nextElement();
                         if (element.getName().endsWith(".class")) {
+                            if(element.getName().equals("module-info.class")){
+                                continue;
+                            }
                             Class<?> clazz = classLoader.loadClass(element.getName().replace("/", ".").substring(0, element.getName().length() - 6));
                             if (clazz.isAnnotationPresent(Plugin.class)) {
                                 mainClass = clazz;
@@ -107,7 +110,9 @@ public class PluginManagerJNI implements PluginManager {
         plugins.forEach(plugin -> {
             try {
                 plugin.getClass().getMethod("onEnable").invoke(plugin);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {}
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
         });
     }
 

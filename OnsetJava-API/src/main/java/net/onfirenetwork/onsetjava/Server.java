@@ -100,4 +100,5 @@ public interface Server {
     }
     void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion, double camShakeRadius, double radialForce);
     NetworkStats getNetworkStats();
+    void registerRemoteEvent(String name);
 }

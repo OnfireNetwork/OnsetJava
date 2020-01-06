@@ -48,7 +48,7 @@ public class PackageBus {
         Class<? extends Event> eventClass = event.getClass();
         for(Object listener : handlerMaps.keySet()){
             if(!handlerMaps.get(listener).containsKey(eventClass)) {
-                return;
+                continue;
             }
             for(Method handlerMethod : handlerMaps.get(listener).get(eventClass)){
                 try {

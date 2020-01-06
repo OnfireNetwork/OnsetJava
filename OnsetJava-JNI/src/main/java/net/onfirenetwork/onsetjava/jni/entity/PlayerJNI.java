@@ -38,7 +38,7 @@ public class PlayerJNI implements Player {
     }
 
     public String getSteamId() {
-        return (String) ServerJNI.callGlobal("GetPlayerSteamId", id)[0];
+        return (String) ServerJNI.callGlobal("GetPlayerSteamIdString", id)[0];
     }
 
     public void sendMessage(String message) {

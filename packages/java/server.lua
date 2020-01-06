@@ -1,6 +1,10 @@
 local jvm
 local nextCS = 1
 
+function GetPlayerSteamIdString(player)
+    return tostring(GetPlayerSteamId(player))
+end
+
 function RegisterJavaCommand(name)
 	AddCommand(name, function(...)
 		CallJavaStaticMethod(jvm, 'net/onfirenetwork/onsetjava/jni/LuaAdapter', 'luaCommand', '(Ljava/lang/String;Ljava/util/Map;)V', name, {...})

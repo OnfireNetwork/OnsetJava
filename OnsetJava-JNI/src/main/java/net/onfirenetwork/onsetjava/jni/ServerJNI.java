@@ -37,7 +37,11 @@ public class ServerJNI implements Server {
         File pluginFolder = new File("java/plugins");
         if(!pluginFolder.exists())
             pluginFolder.mkdir();
-        instance.pluginManager.load(pluginFolder);
+        try {
+            instance.pluginManager.load(pluginFolder);
+        }catch (Throwable t){
+            t.printStackTrace();
+        }
         instance.pluginManager.enable();
     }
 
@@ -287,6 +291,10 @@ public class ServerJNI implements Server {
 
     public NetworkStats getNetworkStats(){
         return new NetworkStatsJNI((Map<String, Object>) ServerJNI.callGlobal("GetNetworkStats")[0]);
+    }
+
+    public void registerRemoteEvent(String name){
+        packageBus.registerRemoteEvent(name);
     }
 
 }
