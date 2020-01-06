@@ -157,7 +157,7 @@ public class OnsetJavaCLI {
         }
     }
 
-    public static void main(String [] args){
+    public static void install(){
         exportPackage();
         File javaFolder = new File("java");
         if(!javaFolder.exists()){
@@ -169,6 +169,10 @@ public class OnsetJavaCLI {
         }else{
             writePackageConfig(exportResources(pluginFolder));
         }
+    }
+
+    public static void main(String [] args){
+        install();
     }
 
 }
