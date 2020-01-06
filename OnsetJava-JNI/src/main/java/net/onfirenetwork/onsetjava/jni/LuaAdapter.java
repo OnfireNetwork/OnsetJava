@@ -37,7 +37,7 @@ public class LuaAdapter {
     public static void luaRemoteEvent(String name, Map<Integer, Object> args){
         Object[] argsArray = tableArray(args);
         int playerId = (Integer) argsArray[0];
-        Object[] eventArgs = new String[argsArray.length-1];
+        Object[] eventArgs = new Object[argsArray.length-1];
         for(int i=0; i<eventArgs.length; i++){
             eventArgs[i] = argsArray[i+1];
         }
