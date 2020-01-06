@@ -55,7 +55,7 @@ public class PlayerJNI implements Player {
     }
 
     public void setLocation(Vector location) {
-        ServerJNI.callGlobal("SetPlayerLocation", location.getX(), location.getY(), location.getZ());
+        ServerJNI.callGlobal("SetPlayerLocation", id, location.getX(), location.getY(), location.getZ());
     }
 
     public Location getLocationAndHeading() {
@@ -77,7 +77,7 @@ public class PlayerJNI implements Player {
     }
 
     public void setHeading(double heading) {
-        ServerJNI.callGlobal("SetPlayerHeading", heading);
+        ServerJNI.callGlobal("SetPlayerHeading", id, heading);
     }
 
     public int getDimensionId(){
