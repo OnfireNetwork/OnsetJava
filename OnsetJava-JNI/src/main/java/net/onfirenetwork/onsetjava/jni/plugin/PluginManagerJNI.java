@@ -1,6 +1,7 @@
 package net.onfirenetwork.onsetjava.jni.plugin;
 
 import net.onfirenetwork.onsetjava.Onset;
+import net.onfirenetwork.onsetjava.jni.HashHelper;
 import net.onfirenetwork.onsetjava.plugin.Plugin;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
 
@@ -9,6 +10,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -18,6 +22,7 @@ public class PluginManagerJNI implements PluginManager {
     private List<Object> plugins = new ArrayList<>();
     private Map<Object, Plugin> infos = new HashMap<>();
     private Map<Object, File> files = new HashMap<>();
+    private Map<Object, String> resourceHashes = new HashMap<>();
 
     public void load(File pluginFolder) {
         List<File> pluginFiles = new ArrayList<>();
@@ -56,6 +61,7 @@ public class PluginManagerJNI implements PluginManager {
                         Object instance = mainClass.getConstructor().newInstance();
                         plugins.add(instance);
                         files.put(instance, file);
+                        resourceHashes.put(instance, HashHelper.md5(file.getName()));
                         infos.put(instance, mainClass.getAnnotationsByType(Plugin.class)[0]);
                     }
                 } catch (Exception ex) {
@@ -138,6 +144,12 @@ public class PluginManagerJNI implements PluginManager {
 
     public Plugin getInfo(Object plugin){
         return infos.get(plugin);
+    }
+
+    public String getResourceName(Object plugin, String name){
+        if(!resourceHashes.containsKey(plugin))
+            return null;
+        return resourceHashes.get(plugin)+"/"+name;
     }
 
 }
