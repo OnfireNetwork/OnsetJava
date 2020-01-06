@@ -44,8 +44,9 @@ public class OnsetJavaCLI {
         file.mkdir();
     }
 
-    private static List<String> exportResources(File pluginFolder){
+    private static void exportResources(File pluginFolder){
         List<String> files = new ArrayList<>();
+        List<String> client = new ArrayList<>();
         List<File> pluginFiles = new ArrayList<>();
         for (File file : pluginFolder.listFiles()) {
             if (file.isDirectory())
@@ -71,31 +72,47 @@ public class OnsetJavaCLI {
                     Enumeration<JarEntry> en = jf.entries();
                     while (en.hasMoreElements()) {
                         JarEntry element = en.nextElement();
-                        if(!element.getName().startsWith("files/"))
-                            continue;
                         if(element.getName().endsWith("/"))
                             continue;
-                        String name = element.getName().substring(6);
-                        files.add(pluginHash+"/"+name);
-                        File targetFile = new File(resourceFolder, name);
-                        mkdir(targetFile.getAbsoluteFile().getParentFile());
-                        FileOutputStream fos = new FileOutputStream(targetFile);
-                        InputStream is = jf.getInputStream(element);
-                        while (is.available() > 0){
-                            byte[] data = new byte[Math.min(4096, is.available())];
-                            is.read(data);
-                            fos.write(data);
-                            fos.flush();
+                        if(element.getName().startsWith("files/")){
+                            String name = element.getName().substring(6);
+                            files.add(pluginHash+"/"+name);
+                            File targetFile = new File(resourceFolder, name);
+                            mkdir(targetFile.getAbsoluteFile().getParentFile());
+                            FileOutputStream fos = new FileOutputStream(targetFile);
+                            InputStream is = jf.getInputStream(element);
+                            while (is.available() > 0){
+                                byte[] data = new byte[Math.min(4096, is.available())];
+                                is.read(data);
+                                fos.write(data);
+                                fos.flush();
+                            }
+                            is.close();
+                            fos.close();
                         }
-                        is.close();
-                        fos.close();
+                        if(element.getName().startsWith("client/")){
+                            String name = element.getName().substring(7);
+                            client.add(pluginHash+"/"+name);
+                            File targetFile = new File(resourceFolder, name);
+                            mkdir(targetFile.getAbsoluteFile().getParentFile());
+                            FileOutputStream fos = new FileOutputStream(targetFile);
+                            InputStream is = jf.getInputStream(element);
+                            while (is.available() > 0){
+                                byte[] data = new byte[Math.min(4096, is.available())];
+                                is.read(data);
+                                fos.write(data);
+                                fos.flush();
+                            }
+                            is.close();
+                            fos.close();
+                        }
                     }
                 } catch (Exception ex) {
                 }
             }
         } catch (MalformedURLException ex) {
         }
-        return files;
+        writePackageConfig(files, client);
     }
 
     private static void exportPackage(){
@@ -132,12 +149,14 @@ public class OnsetJavaCLI {
         }
     }
 
-    private static void writePackageConfig(List<String> files){
+    private static void writePackageConfig(List<String> files, List<String> client){
         JsonArray filesJson = new JsonArray();
         for(String file : files)
             filesJson.add(file);
         JsonArray clientFiles = new JsonArray();
         clientFiles.add("client.lua");
+        for(String file : client)
+            clientFiles.add(file);
         JsonArray serverFiles = new JsonArray();
         serverFiles.add("server.lua");
         JsonObject json = new JsonObject();
@@ -167,7 +186,7 @@ public class OnsetJavaCLI {
         if(!pluginFolder.exists()){
             pluginFolder.mkdir();
         }else{
-            writePackageConfig(exportResources(pluginFolder));
+            exportResources(pluginFolder);
         }
     }
 
