@@ -10,8 +10,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -83,8 +81,8 @@ public class OnsetJavaCLI {
                             InputStream is = jf.getInputStream(element);
                             while (is.available() > 0){
                                 byte[] data = new byte[Math.min(4096, is.available())];
-                                is.read(data);
-                                fos.write(data);
+                                int r = is.read(data);
+                                fos.write(data, 0, r);
                                 fos.flush();
                             }
                             is.close();
@@ -99,8 +97,8 @@ public class OnsetJavaCLI {
                             InputStream is = jf.getInputStream(element);
                             while (is.available() > 0){
                                 byte[] data = new byte[Math.min(4096, is.available())];
-                                is.read(data);
-                                fos.write(data);
+                                int r = is.read(data);
+                                fos.write(data, 0, r);
                                 fos.flush();
                             }
                             is.close();
@@ -124,8 +122,8 @@ public class OnsetJavaCLI {
             FileOutputStream fos = new FileOutputStream(new File(packageDirectory, "server.lua"));
             while (is.available() > 0){
                 byte[] data = new byte[Math.min(4096, is.available())];
-                is.read(data);
-                fos.write(data);
+                int r = is.read(data);
+                fos.write(data, 0, r);
                 fos.flush();
             }
             is.close();
@@ -138,8 +136,8 @@ public class OnsetJavaCLI {
             FileOutputStream fos = new FileOutputStream(new File(packageDirectory, "client.lua"));
             while (is.available() > 0){
                 byte[] data = new byte[Math.min(4096, is.available())];
-                is.read(data);
-                fos.write(data);
+                int r = is.read(data);
+                fos.write(data, 0, r);
                 fos.flush();
             }
             is.close();
