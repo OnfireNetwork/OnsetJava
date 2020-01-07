@@ -21,6 +21,7 @@ public class PackageBus {
     private List<String> registeredRemoteEvents = new ArrayList<>();
     private Map<Object, Map<Class<? extends Event>, List<Method>>> handlerMaps = new HashMap<>();
     private Map<String, ExportFunction> exportFunctionMap = new HashMap<>();
+    private Map<Integer, Runnable> delayFunctionMap = new HashMap<>();
 
     public void init(){
         registerLuaEvent(PlayerServerAuthEvent.class);
@@ -119,6 +120,22 @@ public class PackageBus {
             a[i-1] = argsMap.get(i);
         }
         return fn.call(a);
+    }
+
+    public void createDelay(int millis, Runnable callback){
+        Integer id = 1;
+        while (delayFunctionMap.containsKey(id)){
+            id++;
+        }
+        delayFunctionMap.put(id, callback);
+        ServerJNI.callGlobal("DelayJava", millis, id);
+    }
+
+    public void callDelay(Integer id){
+        if(!delayFunctionMap.containsKey(id))
+            return;
+        delayFunctionMap.get(id).run();
+        delayFunctionMap.remove(id);
     }
 
 }

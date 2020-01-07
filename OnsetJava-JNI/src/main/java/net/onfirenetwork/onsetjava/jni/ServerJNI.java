@@ -297,4 +297,8 @@ public class ServerJNI implements Server {
         packageBus.registerRemoteEvent(name);
     }
 
+    public void delay(int millis, Runnable runnable){
+        packageBus.createDelay(millis, runnable);
+    }
+
 }

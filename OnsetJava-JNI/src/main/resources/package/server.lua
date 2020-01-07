@@ -53,6 +53,12 @@ function RunClientScript(player, script)
 	end
 end
 
+function DelayJava(millis, id)
+    Delay(millis, function()
+        CallJavaStaticMethod(jvm, 'net/onfirenetwork/onsetjava/jni/LuaAdapter', 'callDelay', '(Ljava/lang/Integer;)V', id)
+    end)
+end
+
 AddEvent("OnPackageStart", function()
 	jvm = CreateJava()
 	LinkJavaAdapter(jvm, "net/onfirenetwork/onsetjava/jni/LuaAdapter")

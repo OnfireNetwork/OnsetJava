@@ -61,5 +61,7 @@ public class LuaAdapter {
     public static Object callExportFunction(String name, Map<Integer, Object> argsMap){
         return ServerJNI.getInstance().packageBus.callExportFunction(name, argsMap);
     }
-
+    public static void callDelay(Integer id){
+        ServerJNI.getInstance().packageBus.callDelay(id);
+    }
 }

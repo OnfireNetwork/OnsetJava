@@ -64,4 +64,7 @@ public class Onset {
     public static void registerRemoteEvent(String name){
         server.registerRemoteEvent(name);
     }
+    public static void delay(int millis, Runnable callback){
+        server.delay(millis, callback);
+    }
 }
