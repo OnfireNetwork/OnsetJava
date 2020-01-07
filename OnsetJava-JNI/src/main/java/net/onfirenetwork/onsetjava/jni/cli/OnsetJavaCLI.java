@@ -4,15 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.jni.HashHelper;
+import net.onfirenetwork.onsetjava.plugin.Plugin;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -42,10 +43,62 @@ public class OnsetJavaCLI {
         file.mkdir();
     }
 
+    private static Plugin getInfo(File file){
+        try {
+            URLClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()});
+            JarFile jf = new JarFile(file);
+            Enumeration<JarEntry> en = jf.entries();
+            while (en.hasMoreElements()) {
+                JarEntry element = en.nextElement();
+                if (element.getName().endsWith(".class")) {
+                    if(element.getName().equals("module-info.class")){
+                        continue;
+                    }
+                    Class<?> clazz = classLoader.loadClass(element.getName().replace("/", ".").substring(0, element.getName().length() - 6));
+                    if (clazz.isAnnotationPresent(Plugin.class)) {
+                        Plugin plugin = clazz.getAnnotationsByType(Plugin.class)[0];
+                        classLoader.close();
+                        jf.close();
+                        return plugin;
+                    }
+                }
+            }
+            classLoader.close();
+        } catch (Exception ex) {
+        }
+        return null;
+    }
+
+    private static void writePluginsScript(Map<String, String> pluginHashes){
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        sb.append("local pluginHashes = {");
+        for(String key : pluginHashes.keySet()){
+            if(!first){
+                sb.append(",");
+            }else{
+                first = false;
+            }
+            sb.append("\n\t[\"");
+            sb.append(key);
+            sb.append("\"] = \"");
+            sb.append(pluginHashes.get(key));
+            sb.append("\"");
+        }
+        sb.append("\n}\nfunction GetPluginHash(name)\n\treturn pluginHashes[name]\nend");
+        try {
+            FileOutputStream fos = new FileOutputStream(new File("packages/java/plugins.lua"));
+            fos.write(sb.toString().getBytes(StandardCharsets.UTF_8));
+            fos.flush();
+            fos.close();
+        }catch (IOException ex){}
+    }
+
     private static void exportResources(File pluginFolder){
         List<String> files = new ArrayList<>();
         List<String> client = new ArrayList<>();
         List<File> pluginFiles = new ArrayList<>();
+        Map<String, String> pluginHashes = new HashMap<>();
         for (File file : pluginFolder.listFiles()) {
             if (file.isDirectory())
                 continue;
@@ -59,7 +112,11 @@ public class OnsetJavaCLI {
                 urls[i] = pluginFiles.get(i).toURI().toURL();
             }
             for (File file : pluginFiles) {
+                Plugin info = getInfo(file);
+                if(info == null)
+                    continue;
                 String pluginHash = HashHelper.md5(file.getName());
+                pluginHashes.put(info.name(), pluginHash);
                 File resourceFolder = new File("packages/java/"+pluginHash);
                 if(resourceFolder.exists()){
                     deleteRecursive(resourceFolder);
@@ -110,6 +167,7 @@ public class OnsetJavaCLI {
             }
         } catch (MalformedURLException ex) {
         }
+        writePluginsScript(pluginHashes);
         writePackageConfig(files, client);
     }
 
@@ -153,6 +211,7 @@ public class OnsetJavaCLI {
             filesJson.add(file);
         JsonArray clientFiles = new JsonArray();
         clientFiles.add("client.lua");
+        clientFiles.add("plugins.lua");
         for(String file : client)
             clientFiles.add(file);
         JsonArray serverFiles = new JsonArray();
