@@ -7,13 +7,17 @@ import java.util.Map;
 
 public class I18N {
 
+    private static String fallback = "translation-error";
     private static Map<String, I18NPlugin> packageMap = new HashMap<>();
     private static Map<String, String> packageNameMap = new HashMap<>();
 
     public static String translate(String plugin, String key, Object... args){
         if(!packageMap.containsKey(plugin))
-            return null;
-        return packageMap.get(plugin).translate(key, args);
+            return fallback;
+        String ts = packageMap.get(plugin).translate(key, args);
+        if(ts == null)
+            return fallback;
+        return ts;
     }
     public static String translate(Object plugin, String key, Object... args){
         return translate(Onset.getServer().getPluginManager().getInfo(plugin).name(), key, args);
@@ -26,7 +30,7 @@ public class I18N {
                 }
             }
         }
-        return null;
+        return fallback;
     }
     public static String t(String plugin, String key, Object... args){
         return translate(plugin, key, args);
@@ -45,5 +49,8 @@ public class I18N {
     }
     public static void registerPackage(String plugin, String packageName){
         packageNameMap.put(packageName, plugin);
+    }
+    public static void setFallback(String fallback){
+        I18N.fallback = fallback;
     }
 }
