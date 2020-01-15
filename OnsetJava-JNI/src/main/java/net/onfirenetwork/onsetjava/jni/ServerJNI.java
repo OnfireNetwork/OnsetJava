@@ -32,13 +32,14 @@ public class ServerJNI implements Server {
 
     public static void init(String packageName){
         instance = new ServerJNI(packageName);
+        instance.config = OnsetJavaConfig.load(new File("onset.json"));
         Onset.setServer(instance);
         instance.packageBus.init();
         File pluginFolder = new File("java/plugins");
         if(!pluginFolder.exists())
             pluginFolder.mkdir();
         try {
-            instance.pluginManager.load(pluginFolder);
+            instance.pluginManager.load(pluginFolder, instance.config.getLanguage());
         }catch (Throwable t){
             t.printStackTrace();
         }
@@ -50,6 +51,7 @@ public class ServerJNI implements Server {
     }
 
     private String packageName;
+    private OnsetJavaConfig config;
     private Map<String, Map<String, LuaFunction>> importPackageMap = new HashMap<>();
     private List<Player> players = new ArrayList<>();
     public PackageBus packageBus = new PackageBus();

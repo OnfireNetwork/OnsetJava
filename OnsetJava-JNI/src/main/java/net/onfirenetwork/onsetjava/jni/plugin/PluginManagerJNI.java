@@ -1,6 +1,8 @@
 package net.onfirenetwork.onsetjava.jni.plugin;
 
 import net.onfirenetwork.onsetjava.Onset;
+import net.onfirenetwork.onsetjava.i18n.I18N;
+import net.onfirenetwork.onsetjava.i18n.I18NPlugin;
 import net.onfirenetwork.onsetjava.jni.HashHelper;
 import net.onfirenetwork.onsetjava.plugin.Plugin;
 import net.onfirenetwork.onsetjava.plugin.PluginManager;
@@ -10,9 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -24,7 +23,7 @@ public class PluginManagerJNI implements PluginManager {
     private Map<Object, File> files = new HashMap<>();
     private Map<Object, String> resourceHashes = new HashMap<>();
 
-    public void load(File pluginFolder) {
+    public void load(File pluginFolder, String language) {
         List<File> pluginFiles = new ArrayList<>();
         for (File file : pluginFolder.listFiles()) {
             if (file.isDirectory())
@@ -43,6 +42,7 @@ public class PluginManagerJNI implements PluginManager {
             for (File file : pluginFiles) {
                 try {
                     Class<?> mainClass = null;
+                    I18NPlugin translation = null;
                     JarFile jf = new JarFile(file);
                     Enumeration<JarEntry> en = jf.entries();
                     while (en.hasMoreElements()) {
@@ -56,13 +56,21 @@ public class PluginManagerJNI implements PluginManager {
                                 mainClass = clazz;
                             }
                         }
+                        if (element.getName().equals("i18n/"+language+".json")) {
+                            translation = new I18NPluginImpl(jf.getInputStream(element));
+                        }
                     }
                     if (mainClass != null) {
                         Object instance = mainClass.getConstructor().newInstance();
                         plugins.add(instance);
                         files.put(instance, file);
                         resourceHashes.put(instance, HashHelper.md5(file.getName()));
-                        infos.put(instance, mainClass.getAnnotationsByType(Plugin.class)[0]);
+                        Plugin info = mainClass.getAnnotationsByType(Plugin.class)[0];
+                        infos.put(instance, info);
+                        if(translation != null){
+                            I18N.put(info.name(), translation);
+                            I18N.registerPackage(info.name(), mainClass.getPackage().getName());
+                        }
                     }
                 } catch (Exception ex) {
                     Onset.print("Failed to load '" + file.getName() + "'!");
