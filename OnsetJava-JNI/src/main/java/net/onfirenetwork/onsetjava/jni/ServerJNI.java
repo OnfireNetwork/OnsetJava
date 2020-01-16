@@ -38,6 +38,7 @@ public class ServerJNI implements Server {
         File pluginFolder = new File("java/plugins");
         if(!pluginFolder.exists())
             pluginFolder.mkdir();
+        Onset.registerRemoteEvent("RequestTranslation");
         try {
             instance.pluginManager.load(pluginFolder, instance.config.getLanguage());
         }catch (Throwable t){

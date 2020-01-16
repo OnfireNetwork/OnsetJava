@@ -2,7 +2,9 @@ package net.onfirenetwork.onsetjava.i18n;
 
 import net.onfirenetwork.onsetjava.Onset;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class I18N {
@@ -52,5 +54,11 @@ public class I18N {
     }
     public static void setFallback(String fallback){
         I18N.fallback = fallback;
+    }
+    public static List<String> getKnownPlugins(){
+        return new ArrayList<>(packageMap.keySet());
+    }
+    public static I18NPlugin get(String plugin){
+        return packageMap.get(plugin);
     }
 }

@@ -7,7 +7,9 @@ import net.onfirenetwork.onsetjava.i18n.I18NPlugin;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class I18NPluginImpl implements I18NPlugin {
@@ -44,5 +46,11 @@ public class I18NPluginImpl implements I18NPlugin {
             stream.close();
         }catch (Exception e){}
         return baos.toByteArray();
+    }
+    public List<String> keys(){
+        return new ArrayList<>(stringMap.keySet());
+    }
+    public String raw(String key){
+        return stringMap.get(key);
     }
 }
