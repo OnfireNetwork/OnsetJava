@@ -76,8 +76,11 @@ public class VehicleJNI implements Vehicle {
     public int getModel(){
         return (Integer) ServerJNI.callGlobal("GetVehicleModel", id)[0];
     }
-    public void setRespawn(boolean enabled, int time, boolean repair){
-        ServerJNI.callGlobal("SetVehicleRespawnParams", id, enabled, time, repair);
+    public void enableRespawn(int time, boolean repair){
+        ServerJNI.callGlobal("SetVehicleRespawnParams", id, true, time, repair);
+    }
+    public void disableRespawn(){
+        ServerJNI.callGlobal("SetVehicleRespawnParams", id, false);
     }
     public Player getDriver(){
         Object ret = ServerJNI.callGlobal("GetVehicleDriver", id)[0];

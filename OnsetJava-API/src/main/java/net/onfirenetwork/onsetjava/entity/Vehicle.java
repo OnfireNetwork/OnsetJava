@@ -30,7 +30,8 @@ public interface Vehicle extends HitEntity, PropertyEntity, AttachmentEntity {
     void setColor(Color color);
     Color getColor();
     int getModel();
-    void setRespawn(boolean enabled, int time, boolean repair);
+    void enableRespawn(int time, boolean repair);
+    void disableRespawn();
     Player getDriver();
     Player getPassenger(int seat);
     int getSeatCount();
