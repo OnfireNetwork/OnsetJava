@@ -61,4 +61,10 @@ public class PickupJNI implements Pickup {
     public void setVisible(Player player, boolean visible){
         ServerJNI.callGlobal("SetPickupVisibility", id, player.getId(), visible);
     }
+    public void setLocation(Vector location){
+        ServerJNI.callGlobal("SetPickupLocation", id, location.getX(), location.getY(), location.getZ());
+    }
+    public boolean isStreamed(Player player){
+        return (Boolean) ServerJNI.callGlobal("IsPickupStreamedIn", id, player.getId())[0];
+    }
 }

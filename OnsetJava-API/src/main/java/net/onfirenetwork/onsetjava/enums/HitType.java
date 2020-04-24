@@ -7,7 +7,8 @@ public enum HitType {
     NPC(4),
     OBJECT(5),
     LANDSCAPE(6),
-    WATER(7);
+    WATER(7),
+    DOOR(8);
     private int id;
     HitType(int id){
         this.id = id;

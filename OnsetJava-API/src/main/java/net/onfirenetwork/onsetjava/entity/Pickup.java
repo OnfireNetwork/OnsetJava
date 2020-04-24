@@ -24,5 +24,7 @@ public interface Pickup extends PropertyEntity {
     void setVisibleFor(List<Player> players);
     void setVisibleFor(Player... players);
     void setVisible(Player player, boolean visible);
+    void setLocation(Vector location);
+    boolean isStreamed(Player player);
     void destroy();
 }

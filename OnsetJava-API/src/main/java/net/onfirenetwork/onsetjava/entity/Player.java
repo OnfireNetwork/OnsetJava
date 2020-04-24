@@ -101,4 +101,7 @@ public interface Player extends HitEntity, PropertyEntity, AttachmentEntity {
     boolean isStreamed(Player player);
     NetworkStats getNetworkStats();
     List<Player> getStreamedPlayers();
+    void addVoiceChannel(int channel);
+    void removeVoiceChannel(int channel);
+    void setVoiceDimension(int dimensionId);
 }

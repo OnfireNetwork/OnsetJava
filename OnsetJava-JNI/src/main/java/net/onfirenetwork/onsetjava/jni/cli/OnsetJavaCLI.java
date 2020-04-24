@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.jni.HashHelper;
 import net.onfirenetwork.onsetjava.plugin.Plugin;
 

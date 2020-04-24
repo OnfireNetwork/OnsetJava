@@ -54,4 +54,10 @@ public class Text3DJNI implements Text3D {
     public void setText(String text){
         ServerJNI.callGlobal("SetText3DText", id, text);
     }
+    public boolean isStreamed(Player player){
+        return (Boolean) ServerJNI.callGlobal("IsText3DStreamedIn", id, player.getId())[0];
+    }
+    public void setLocation(Vector location){
+        ServerJNI.callGlobal("SetText3DLocation", id, location.getX(), location.getY(), location.getZ());
+    }
 }

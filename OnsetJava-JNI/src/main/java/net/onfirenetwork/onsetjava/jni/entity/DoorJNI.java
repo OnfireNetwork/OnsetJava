@@ -3,6 +3,7 @@ package net.onfirenetwork.onsetjava.jni.entity;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.entity.Door;
+import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.WorldObject;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
 
@@ -50,5 +51,16 @@ public class DoorJNI implements Door {
     }
     public Object getProperty(String key){
         return ServerJNI.callGlobal("GetDoorPropertyValue", id, key)[0];
+    }
+    public double getHeading(){
+        Object[] coords = ServerJNI.callGlobal("GetDoorLocation", id);
+        return (Double) coords[3];
+    }
+    public Location getLocationAndHeading(){
+        Object[] coords = ServerJNI.callGlobal("GetDoorLocation", id);
+        return new Location((Double) coords[0], (Double) coords[1], (Double) coords[2], (Double) coords[3]);
+    }
+    public boolean isStreamed(Player player){
+        return (Boolean) ServerJNI.callGlobal("IsDoorStreamedIn", id, player.getId())[0];
     }
 }

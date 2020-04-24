@@ -117,4 +117,7 @@ public class WorldObjectJNI implements WorldObject {
     public boolean isStreamed(Player player){
         return (Boolean) ServerJNI.callGlobal("IsObjectStreamedIn", player.getId(), id)[0];
     }
+    public void setModel(int model){
+        ServerJNI.callGlobal("SetObjectModel", id, model);
+    }
 }

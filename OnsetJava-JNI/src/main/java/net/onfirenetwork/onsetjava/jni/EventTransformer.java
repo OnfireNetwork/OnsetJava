@@ -17,6 +17,7 @@ import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.UnknownEvent;
 import net.onfirenetwork.onsetjava.plugin.event.npc.*;
 import net.onfirenetwork.onsetjava.plugin.event.player.*;
+import net.onfirenetwork.onsetjava.plugin.event.vehicle.VehicleDamageEvent;
 import net.onfirenetwork.onsetjava.plugin.event.vehicle.VehicleRespawnEvent;
 import net.onfirenetwork.onsetjava.plugin.event.vehicle.VehicleStreamInEvent;
 import net.onfirenetwork.onsetjava.plugin.event.vehicle.VehicleStreamOutEvent;
@@ -153,6 +154,16 @@ public class EventTransformer {
             case "OnVehicleRespawn": {
                 return new VehicleRespawnEvent(Onset.getVehicle((Integer) args[0]));
             }
+            case "OnVehicleDamage": {
+                Vehicle vehicle = ServerJNI.getInstance().getVehicle((Integer) args[0]);
+                if (vehicle != null) {
+                    if (args.length == 4) {
+                        return new VehicleDamageEvent(vehicle, (Double) args[1], (Integer) args[2], (Double) args[3]);
+                    } else {
+                        return new VehicleDamageEvent(vehicle, (Double) args[1], -1, 0);
+                    }
+                }
+            } break;
             case "OnNPCStreamIn": {
                 Player player = ServerJNI.getInstance().getPlayer((Integer) args[1]);
                 if (player != null)

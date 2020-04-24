@@ -25,6 +25,7 @@ public interface Server {
     List<Vehicle> getVehicles();
     NPC getNPC(int id);
     List<NPC> getNPCs();
+    List<WorldObject> getObjects();
     WorldObject getObject(int id);
     List<Pickup> getPickups();
     Pickup getPickup(int id);

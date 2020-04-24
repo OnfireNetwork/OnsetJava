@@ -135,6 +135,14 @@ public class ServerJNI implements Server {
         return npcs;
     }
 
+    public List<WorldObject> getObjects(){
+        List<WorldObject> objects = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllObjects")[0]).values()){
+            objects.add(new WorldObjectJNI(id));
+        }
+        return objects;
+    }
+
     public WorldObject getObject(int id){
         if(!((Boolean) callGlobal("IsValidObject", id)[0]))
             return null;

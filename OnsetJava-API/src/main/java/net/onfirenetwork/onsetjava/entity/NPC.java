@@ -43,4 +43,5 @@ public interface NPC extends HitEntity, PropertyEntity, AttachmentEntity {
     void follow(Vehicle vehicle, double speed);
     boolean isStreamed(Player player);
     void destroy();
+    void setRespawnTime(int time);
 }

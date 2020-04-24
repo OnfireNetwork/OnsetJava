@@ -50,4 +50,5 @@ public interface WorldObject extends HitEntity, PropertyEntity, AttachmentEntity
     void setRotateAxis(double x, double y, double z);
     boolean isStreamed(Player player);
     void destroy();
+    void setModel(int model);
 }

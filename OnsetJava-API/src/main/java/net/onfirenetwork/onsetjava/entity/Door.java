@@ -2,6 +2,7 @@ package net.onfirenetwork.onsetjava.entity;
 
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
+import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.Vector;
 
 public interface Door extends HitEntity, PropertyEntity {
@@ -23,7 +24,10 @@ public interface Door extends HitEntity, PropertyEntity {
     }
     boolean isOpen();
     Vector getLocation();
+    double getHeading();
+    Location getLocationAndHeading();
     void setLocation(Vector location);
     int getModel();
     void destroy();
+    boolean isStreamed(Player player);
 }

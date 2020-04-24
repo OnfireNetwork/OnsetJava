@@ -94,4 +94,7 @@ public class NPCJNI implements NPC {
     public boolean isStreamed(Player player){
         return (Boolean) ServerJNI.callGlobal("IsNPCStreamedIn", player.getId(), id)[0];
     }
+    public void setRespawnTime(int time){
+        ServerJNI.callGlobal("SetNPCRespawnTime", id, time);
+    }
 }

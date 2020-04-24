@@ -22,4 +22,6 @@ public interface Text3D extends PropertyEntity {
     void setVisible(Player player, boolean visible);
     void setText(String text);
     void destroy();
+    boolean isStreamed(Player player);
+    void setLocation(Vector location);
 }

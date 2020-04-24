@@ -282,4 +282,16 @@ public class PlayerJNI implements Player {
         return players;
     }
 
+    public void addVoiceChannel(int channel){
+        ServerJNI.callGlobal("SetPlayerVoiceChannel", id, channel, true);
+    }
+
+    public void removeVoiceChannel(int channel){
+        ServerJNI.callGlobal("SetPlayerVoiceChannel", id, channel, false);
+    }
+
+    public void setVoiceDimension(int dimensionId){
+        ServerJNI.callGlobal("SetPlayerVoiceDimension", id, dimensionId);
+    }
+
 }
