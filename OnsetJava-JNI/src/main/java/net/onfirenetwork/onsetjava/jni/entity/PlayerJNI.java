@@ -233,11 +233,15 @@ public class PlayerJNI implements Player {
     }
 
     public void callRemoteEvent(String name, Object... args){
-        Object[] a = new Object[args.length+2];
+        Object[] a = new Object[Math.max(1, args.length)+2];
         a[0] = id;
         a[1] = name;
-        for(int i=0; i<args.length; i++){
-            a[i+2] = args[i];
+        if(args.length == 0){
+            a[2] = ""; // TEMPORARY FIX
+        }else{
+            for(int i=0; i<args.length; i++){
+                a[i+2] = args[i];
+            }
         }
         ServerJNI.callGlobal("CallRemoteEvent", a);
     }
