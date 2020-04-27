@@ -198,7 +198,7 @@ public class ServerJNI implements Server {
     }
 
     public Text3D createText3D(String text, double size, double x, double y, double z, double rx, double ry, double rz) {
-        return new Text3DJNI((Integer) callGlobal("CreateText3D", text, size, x, y, z, rx, ry, rz)[0]);
+        return new Text3DJNI(Integer.parseInt((String) callGlobal("CreateText3D", text, size, x, y, z, rx, ry, rz)[0]));
     }
 
     public void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion) {

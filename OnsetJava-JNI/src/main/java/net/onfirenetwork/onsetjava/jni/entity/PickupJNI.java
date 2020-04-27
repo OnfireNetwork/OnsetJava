@@ -30,7 +30,7 @@ public class PickupJNI implements Pickup {
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
     public void setScale(double x, double y, double z) {
-        ServerJNI.callGlobal("SetPickupScale", x, y, z);
+        ServerJNI.callGlobal("SetPickupScale", id, x, y, z);
     }
     public boolean equals(Object obj) {
         if(obj.getClass() != PickupJNI.class)
