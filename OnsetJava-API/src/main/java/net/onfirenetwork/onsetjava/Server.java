@@ -33,6 +33,7 @@ public interface Server {
     Text3D getText3D(int id);
     void registerCommand(String name, CommandExecutor executor);
     void callEvent(Event event);
+    void callLuaEvent(String name, Object... args);
     <T> T importLuaPackage(String name, Class<T> interfaceClass);
     void addFunctionExport(String name, ExportFunction function);
     Dimension getDimension(int id);
