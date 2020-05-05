@@ -44,7 +44,7 @@ public class WorldObjectJNI implements WorldObject {
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
     public void setScale(double x, double y, double z) {
-        ServerJNI.callGlobal("SetObjectScale", x, y, z);
+        ServerJNI.callGlobal("SetObjectScale", id, x, y, z);
     }
     public int getModel(){
         return (Integer) ServerJNI.callGlobal("GetObjectModel", id)[0];
