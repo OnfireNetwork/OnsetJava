@@ -104,4 +104,5 @@ public interface Server {
     NetworkStats getNetworkStats();
     void registerRemoteEvent(String name);
     void delay(int millis, Runnable runnable);
+    void timer(int millis, Runnable runnable);
 }

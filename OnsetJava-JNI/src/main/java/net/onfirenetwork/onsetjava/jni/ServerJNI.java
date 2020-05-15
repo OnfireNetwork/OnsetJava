@@ -311,5 +311,8 @@ public class ServerJNI implements Server {
     public void delay(int millis, Runnable runnable){
         packageBus.createDelay(millis, runnable);
     }
+    public void timer(int millis, Runnable runnable){
+        packageBus.createTimer(millis, runnable);
+    }
 
 }

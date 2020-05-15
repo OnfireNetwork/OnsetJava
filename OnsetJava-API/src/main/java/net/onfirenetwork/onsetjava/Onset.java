@@ -67,4 +67,7 @@ public class Onset {
     public static void delay(int millis, Runnable callback){
         server.delay(millis, callback);
     }
+    public static void timer(int millis, Runnable callback){
+        server.timer(millis, callback);
+    }
 }
