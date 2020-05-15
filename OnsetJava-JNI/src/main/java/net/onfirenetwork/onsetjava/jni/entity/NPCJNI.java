@@ -56,7 +56,7 @@ public class NPCJNI implements NPC {
         return (Double) ServerJNI.callGlobal("GetNPCHealth", id)[0];
     }
     public void setAnimation(String animation){
-        ServerJNI.callGlobal("SetNPCAnimation", id, animation);
+        ServerJNI.callGlobal("SetNPCAnimation", id, animation, false);
     }
     public void setRagdoll(boolean ragdoll){
         ServerJNI.callGlobal("SetNPCRagdoll", id, ragdoll);

@@ -30,7 +30,7 @@ public class WorldObjectJNI implements WorldObject {
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
     public void setLocation(Vector location) {
-        ServerJNI.callGlobal("SetObjectLocation", location.getX(), location.getY(), location.getZ());
+        ServerJNI.callGlobal("SetObjectLocation", id, location.getX(), location.getY(), location.getZ());
     }
     public Vector getRotation() {
         Object[] coords = ServerJNI.callGlobal("GetObjectRotation", id);
