@@ -37,6 +37,7 @@ public class Onset {
     public static List<Pickup> getPickups(){
         return server.getPickups();
     }
+    public static List<Door> getDoors() { return server.getDoors(); }
     public static Text3D getText3D(int id){
         return server.getText3D(id);
     }

@@ -163,6 +163,14 @@ public class ServerJNI implements Server {
         return pickups;
     }
 
+    public List<Door> getDoors() {
+        List<Door> doors = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllDoors")[0]).values()) {
+            doors.add(new DoorJNI(id));
+        }
+        return doors;
+    }
+
     public Text3D getText3D(int id){
         if(!((Boolean) callGlobal("IsValidText3D", id)[0]))
             return null;

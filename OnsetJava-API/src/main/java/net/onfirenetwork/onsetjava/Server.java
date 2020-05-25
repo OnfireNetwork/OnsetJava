@@ -29,6 +29,7 @@ public interface Server {
     WorldObject getObject(int id);
     List<Pickup> getPickups();
     Pickup getPickup(int id);
+    List<Door> getDoors();
     List<Text3D> getText3Ds();
     Text3D getText3D(int id);
     void registerCommand(String name, CommandExecutor executor);
