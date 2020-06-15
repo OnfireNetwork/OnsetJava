@@ -72,6 +72,10 @@ public class PlayerJNI implements Player {
         ServerJNI.callGlobal("SetPlayerSpawnLocation", id, location.getX(), location.getY(), location.getZ(), heading);
     }
 
+    public void setVoiceChannel(int channelId, boolean enabled) {
+        ServerJNI.callGlobal("SetPlayerVoiceChannel", id, channelId, enabled);
+    }
+
     public double getHeading() {
         return (Double) ServerJNI.callGlobal("GetPlayerHeading", id)[0];
     }
