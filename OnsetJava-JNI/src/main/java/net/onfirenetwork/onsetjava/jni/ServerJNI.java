@@ -188,7 +188,10 @@ public class ServerJNI implements Server {
     }
 
     public WorldObject createObject(double x, double y, double z, int model){
-        return new WorldObjectJNI((Integer) callGlobal("CreateObject", model, x, y, z)[0]);
+        Object id = callGlobal("CreateObject", model, x, y, z)[0];
+        if(id instanceof Integer)
+            return new WorldObjectJNI((Integer) id);
+        return new WorldObjectJNI(Integer.parseInt((String) id));
     }
 
     public Vehicle createVehicle(double x, double y, double z, double heading, int model){
