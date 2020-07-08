@@ -259,6 +259,7 @@ public class PlayerJNI implements Player {
     }
 
     public void setProperty(String key, Object value, boolean sync){
+        if(value == null) return;
         ServerJNI.callGlobal("SetPlayerPropertyValue", id, key, value, sync);
     }
 

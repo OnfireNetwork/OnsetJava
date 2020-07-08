@@ -29,7 +29,7 @@ public class VehicleJNI implements Vehicle {
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
     public void setLocation(Vector location) {
-        ServerJNI.callGlobal("SetVehicleLocation", location.getX(), location.getY(), location.getZ());
+        ServerJNI.callGlobal("SetVehicleLocation", id, location.getX(), location.getY(), location.getZ());
     }
     public Location getLocationAndHeading() {
         Object[] coords = ServerJNI.callGlobal("GetVehicleLocation", id);

@@ -96,15 +96,17 @@ public class ServerJNI implements Server {
     }
 
     public List<Player> getPlayers() {
-        return players;
+        List<Player> list = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllPlayers")[0]).values()){
+            list.add(new PlayerJNI(id));
+        }
+        return list;
     }
 
     public Player getPlayer(int id){
-        for(Player player : players){
-            if(player.getId() == id)
-                return player;
-        }
-        return null;
+        if(!((Boolean) callGlobal("IsValidPlayer", id)[0]))
+            return null;
+        return new PlayerJNI(id);
     }
 
     public Vehicle getVehicle(int id){
