@@ -29,7 +29,11 @@ public class LuaAdapter {
     private static native void callGlobalFunction(String packageName, String name, Object[] args, List<Object> returnValues);
     public static void init(String packageName){
         mainThread = Thread.currentThread();
-        ServerJNI.init(packageName);
+        try {
+            ServerJNI.init(packageName);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
     private static Object[] tableArray(Map<Integer, Object> table){
         Object[] objects = new Object[table.size()];
