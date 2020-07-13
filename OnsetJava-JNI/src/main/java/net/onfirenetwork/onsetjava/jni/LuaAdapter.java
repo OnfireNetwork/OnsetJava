@@ -22,11 +22,12 @@ public class LuaAdapter {
             System.out.println("You can't call lua functions outside the main thread!");
             throw new RuntimeException("You can't call lua functions outside the main thread!");
         }
-        List<Object> returnValues = new ArrayList<>();
-        callGlobalFunction(packageName, name, args, returnValues);
-        return returnValues.toArray();
+        Object[] obj = callGlobalFunction(packageName, name, args);
+        testGlobalFunction();
+        return obj;
     }
-    private static native void callGlobalFunction(String packageName, String name, Object[] args, List<Object> returnValues);
+    private static native Object[] callGlobalFunction(String packageName, String name, Object[] args);
+    private static native void testGlobalFunction();
     public static void init(String packageName){
         mainThread = Thread.currentThread();
         try {
