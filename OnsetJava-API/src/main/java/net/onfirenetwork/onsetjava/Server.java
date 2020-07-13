@@ -29,6 +29,7 @@ public interface Server {
     WorldObject getObject(int id);
     List<Pickup> getPickups();
     Pickup getPickup(int id);
+    List<Door> getDoors();
     List<Text3D> getText3Ds();
     Text3D getText3D(int id);
     void registerCommand(String name, CommandExecutor executor);
@@ -104,4 +105,5 @@ public interface Server {
     NetworkStats getNetworkStats();
     void registerRemoteEvent(String name);
     void delay(int millis, Runnable runnable);
+    void timer(int millis, Runnable runnable);
 }

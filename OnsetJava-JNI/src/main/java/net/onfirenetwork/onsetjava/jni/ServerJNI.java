@@ -96,15 +96,17 @@ public class ServerJNI implements Server {
     }
 
     public List<Player> getPlayers() {
-        return players;
+        List<Player> list = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllPlayers")[0]).values()){
+            list.add(new PlayerJNI(id));
+        }
+        return list;
     }
 
     public Player getPlayer(int id){
-        for(Player player : players){
-            if(player.getId() == id)
-                return player;
-        }
-        return null;
+        if(!((Boolean) callGlobal("IsValidPlayer", id)[0]))
+            return null;
+        return new PlayerJNI(id);
     }
 
     public Vehicle getVehicle(int id){
@@ -161,6 +163,14 @@ public class ServerJNI implements Server {
             pickups.add(new PickupJNI(id));
         }
         return pickups;
+    }
+
+    public List<Door> getDoors() {
+        List<Door> doors = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllDoors")[0]).values()) {
+            doors.add(new DoorJNI(id));
+        }
+        return doors;
     }
 
     public Text3D getText3D(int id){
@@ -310,6 +320,9 @@ public class ServerJNI implements Server {
 
     public void delay(int millis, Runnable runnable){
         packageBus.createDelay(millis, runnable);
+    }
+    public void timer(int millis, Runnable runnable){
+        packageBus.createTimer(millis, runnable);
     }
 
 }

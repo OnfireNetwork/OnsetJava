@@ -62,6 +62,7 @@ public interface Player extends HitEntity, PropertyEntity, AttachmentEntity {
     default void setWeapon(int slot, Weapon weapon, boolean equip, boolean loaded){
         setWeapon(slot, weapon.getModel(), weapon.getAmmo(), equip, loaded);
     }
+    void setVoiceChannel(int channelId, boolean enabled);
     void setWeapon(int slot, int model, int ammo, boolean equip, boolean loaded);
     void setWeaponSlot(int slot);
     int getWeaponSlot();

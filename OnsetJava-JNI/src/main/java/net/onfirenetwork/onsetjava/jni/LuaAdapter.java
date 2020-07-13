@@ -95,4 +95,7 @@ public class LuaAdapter {
     public static void callDelay(Integer id){
         ServerJNI.getInstance().packageBus.callDelay(id);
     }
+    public static void callTimer(Integer id){
+        ServerJNI.getInstance().packageBus.callTimer(id);
+    }
 }

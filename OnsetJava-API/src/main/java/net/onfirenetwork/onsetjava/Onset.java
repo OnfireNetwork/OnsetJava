@@ -37,6 +37,7 @@ public class Onset {
     public static List<Pickup> getPickups(){
         return server.getPickups();
     }
+    public static List<Door> getDoors() { return server.getDoors(); }
     public static Text3D getText3D(int id){
         return server.getText3D(id);
     }
@@ -66,5 +67,8 @@ public class Onset {
     }
     public static void delay(int millis, Runnable callback){
         server.delay(millis, callback);
+    }
+    public static void timer(int millis, Runnable callback){
+        server.timer(millis, callback);
     }
 }

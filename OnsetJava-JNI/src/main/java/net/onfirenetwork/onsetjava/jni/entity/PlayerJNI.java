@@ -72,6 +72,10 @@ public class PlayerJNI implements Player {
         ServerJNI.callGlobal("SetPlayerSpawnLocation", id, location.getX(), location.getY(), location.getZ(), heading);
     }
 
+    public void setVoiceChannel(int channelId, boolean enabled) {
+        ServerJNI.callGlobal("SetPlayerVoiceChannel", id, channelId, enabled);
+    }
+
     public double getHeading() {
         return (Double) ServerJNI.callGlobal("GetPlayerHeading", id)[0];
     }
@@ -255,6 +259,7 @@ public class PlayerJNI implements Player {
     }
 
     public void setProperty(String key, Object value, boolean sync){
+        if(value == null) return;
         ServerJNI.callGlobal("SetPlayerPropertyValue", id, key, value, sync);
     }
 

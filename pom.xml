@@ -13,5 +13,12 @@
         <module>OnsetJava-JNI</module>
         <module>OnsetJava-ClientDSL</module>
     </modules>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/OnfireNetwork/OnsetJava</url>
+        </repository>
+    </distributionManagement>
 
 </project>
