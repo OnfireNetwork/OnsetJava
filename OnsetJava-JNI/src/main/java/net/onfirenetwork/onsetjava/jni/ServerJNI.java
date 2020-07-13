@@ -31,6 +31,7 @@ public class ServerJNI implements Server {
     }
 
     public static void init(String packageName){
+        System.out.println("Init with package: "+packageName);
         instance = new ServerJNI(packageName);
         instance.config = OnsetJavaConfig.load(new File("onset.json"));
         Onset.setServer(instance);
@@ -45,6 +46,7 @@ public class ServerJNI implements Server {
             t.printStackTrace();
         }
         instance.pluginManager.enable();
+        Onset.print("Testing");
     }
 
     public static Object[] callGlobal(String name, Object... args){
