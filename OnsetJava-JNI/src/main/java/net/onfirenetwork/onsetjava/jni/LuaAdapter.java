@@ -18,8 +18,10 @@ public class LuaAdapter {
 
     public static native void callEvent(String name, Object... args);
     public static Object[] callGlobal(String packageName, String name, Object... args){
-        if(!Thread.currentThread().equals(mainThread))
+        if(!Thread.currentThread().equals(mainThread)) {
+            System.out.println("You can't call lua functions outside the main thread!");
             throw new RuntimeException("You can't call lua functions outside the main thread!");
+        }
         List<Object> returnValues = new ArrayList<>();
         callGlobalFunction(packageName, name, args, returnValues);
         return returnValues.toArray();
