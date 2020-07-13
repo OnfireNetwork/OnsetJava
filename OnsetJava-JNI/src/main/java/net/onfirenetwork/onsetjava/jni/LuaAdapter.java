@@ -24,7 +24,7 @@ public class LuaAdapter {
         callGlobalFunction(packageName, name, args, returnValues);
         return returnValues.toArray();
     }
-    private static native Object[] callGlobalFunction(String packageName, String name, Object[] args, List<Object> returnValues);
+    private static native void callGlobalFunction(String packageName, String name, Object[] args, List<Object> returnValues);
     public static void init(String packageName){
         mainThread = Thread.currentThread();
         ServerJNI.init(packageName);
