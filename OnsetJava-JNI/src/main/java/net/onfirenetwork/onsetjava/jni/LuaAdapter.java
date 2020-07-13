@@ -1,12 +1,8 @@
 package net.onfirenetwork.onsetjava.jni;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.i18n.I18N;
 import net.onfirenetwork.onsetjava.i18n.I18NPlugin;
-import net.onfirenetwork.onsetjava.plugin.ExportFunction;
 import net.onfirenetwork.onsetjava.plugin.event.Cancellable;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
 import net.onfirenetwork.onsetjava.plugin.event.player.PlayerRemoteEvent;
@@ -18,9 +14,19 @@ import java.util.Map;
 
 public class LuaAdapter {
 
+    private static Thread mainThread;
+
     public static native void callEvent(String name, Object... args);
-    public static native Object[] callGlobalFunction(String packageName, String name, Object... args);
+    public static Object[] callGlobal(String packageName, String name, Object... args){
+        if(!Thread.currentThread().equals(mainThread))
+            throw new RuntimeException("You can't call lua functions outside the main thread!");
+        List<Object> returnValues = new ArrayList<>();
+        callGlobalFunction(packageName, name, args, returnValues);
+        return returnValues.toArray();
+    }
+    private static native Object[] callGlobalFunction(String packageName, String name, Object[] args, List<Object> returnValues);
     public static void init(String packageName){
+        mainThread = Thread.currentThread();
         ServerJNI.init(packageName);
     }
     private static Object[] tableArray(Map<Integer, Object> table){

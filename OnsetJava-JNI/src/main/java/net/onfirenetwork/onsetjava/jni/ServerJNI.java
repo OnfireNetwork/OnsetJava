@@ -48,7 +48,7 @@ public class ServerJNI implements Server {
     }
 
     public static Object[] callGlobal(String name, Object... args){
-        return LuaAdapter.callGlobalFunction(instance.packageName, name, args);
+        return LuaAdapter.callGlobal(instance.packageName, name, args);
     }
 
     private String packageName;
@@ -76,7 +76,7 @@ public class ServerJNI implements Server {
     }
 
     public String getServerName() {
-        return (String) LuaAdapter.callGlobalFunction(packageName, "GetServerName")[0];
+        return (String) LuaAdapter.callGlobal(packageName, "GetServerName")[0];
     }
 
     public void setServerName(String name) {
