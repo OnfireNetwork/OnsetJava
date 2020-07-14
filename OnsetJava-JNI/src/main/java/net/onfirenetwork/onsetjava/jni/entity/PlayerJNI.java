@@ -248,6 +248,7 @@ public class PlayerJNI implements Player {
             }
         }
         System.out.println(name);
+        System.out.println(a[2]);
         ServerJNI.callGlobal("CallRemoteEvent", a);
     }
 
