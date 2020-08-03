@@ -26,7 +26,7 @@ public interface Door extends HitEntity, PropertyEntity {
     Vector getLocation();
     double getHeading();
     Location getLocationAndHeading();
-    void setLocation(Vector location);
+    void setLocation(Location location);
     int getModel();
     void destroy();
     boolean isStreamed(Player player);

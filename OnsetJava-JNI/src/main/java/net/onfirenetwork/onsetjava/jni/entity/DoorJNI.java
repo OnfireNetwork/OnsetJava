@@ -25,8 +25,8 @@ public class DoorJNI implements Door {
         Object[] coords = ServerJNI.callGlobal("GetDoorLocation", id);
         return new Vector((Double) coords[0], (Double) coords[1], (Double) coords[2]);
     }
-    public void setLocation(Vector location) {
-        ServerJNI.callGlobal("SetDoorLocation", location.getX(), location.getY(), location.getZ());
+    public void setLocation(Location location) {
+        ServerJNI.callGlobal("SetDoorLocation", location.getX(), location.getY(), location.getZ(), location.getHeading());
     }
     public void setOpen(boolean open){
         ServerJNI.callGlobal("SetDoorOpen", id, open);
