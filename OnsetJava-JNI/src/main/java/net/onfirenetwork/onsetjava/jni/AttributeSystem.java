@@ -17,8 +17,9 @@ public class AttributeSystem {
     private static Map<Integer, Map<String, Object>> text3DAttributes = new HashMap<>();
 
     public static Map<String, Object> getPlayerAttributes(int id){
-        if(!playerAttributes.containsKey(id))
+        if(!playerAttributes.containsKey(id)){
             playerAttributes.put(id, new HashMap<>());
+        }
         return playerAttributes.get(id);
     }
 

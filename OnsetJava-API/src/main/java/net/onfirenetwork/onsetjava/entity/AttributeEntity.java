@@ -16,7 +16,12 @@ public interface AttributeEntity {
         return value == null ? null : (T) value;
     }
     default <T> T getAttribute(String key, T defaultValue){
-        return (T) getAttributes().getOrDefault(key, defaultValue);
+        T value = getAttribute(key);
+        if(value == null){
+            value = defaultValue;
+            setAttribute(key, value);
+        }
+        return value;
     }
 
 }

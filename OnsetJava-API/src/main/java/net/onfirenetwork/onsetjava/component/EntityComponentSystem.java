@@ -8,6 +8,7 @@ import net.onfirenetwork.onsetjava.plugin.event.player.*;
 import net.onfirenetwork.onsetjava.plugin.event.vehicle.VehicleDamageEvent;
 import net.onfirenetwork.onsetjava.plugin.event.vehicle.VehicleRespawnEvent;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class EntityComponentSystem {
@@ -22,11 +23,15 @@ public class EntityComponentSystem {
     }
 
     private static void applyEvents(Player player, Consumer<PlayerComponent> consumer){
-        player.getComponents().forEach(consumer);
+        List<PlayerComponent> components = player.getComponents();
+        components.forEach(c -> c.setEntity(player));
+        components.forEach(consumer);
     }
 
     private static void applyEvents(Vehicle vehicle, Consumer<VehicleComponent> consumer){
-        vehicle.getComponents().forEach(consumer);
+        List<VehicleComponent> components = vehicle.getComponents();
+        components.forEach(c -> c.setEntity(vehicle));
+        components.forEach(consumer);
     }
 
     @EventHandler
