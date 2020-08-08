@@ -59,6 +59,13 @@ function DelayJava(millis, id)
     end)
 end
 
+function TimerJava(millis, id)
+	local timer = CreateTimer(function()
+		CallJavaStaticMethod(jvm, 'net/onfirenetwork/onsetjava/jni/LuaAdapter', 'callTimer', '(Ljava/lang/Integer;)V', id)
+	end, millis)
+	return timer
+end
+
 AddEvent("OnPackageStart", function()
 	jvm = CreateJava()
 	LinkJavaAdapter(jvm, "net/onfirenetwork/onsetjava/jni/LuaAdapter")

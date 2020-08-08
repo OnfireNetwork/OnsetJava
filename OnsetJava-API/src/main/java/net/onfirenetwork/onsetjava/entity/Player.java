@@ -3,6 +3,7 @@ package net.onfirenetwork.onsetjava.entity;
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.clientdsl.LF;
+import net.onfirenetwork.onsetjava.component.PlayerComponent;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.NetworkStats;
 import net.onfirenetwork.onsetjava.data.Vector;
@@ -13,7 +14,7 @@ import net.onfirenetwork.onsetjava.enums.WeaponModel;
 
 import java.util.List;
 
-public interface Player extends HitEntity, PropertyEntity, AttachmentEntity {
+public interface Player extends ComponentEntity<PlayerComponent>, AttributeEntity, HitEntity, PropertyEntity, AttachmentEntity {
 
     int getId();
     String getName();

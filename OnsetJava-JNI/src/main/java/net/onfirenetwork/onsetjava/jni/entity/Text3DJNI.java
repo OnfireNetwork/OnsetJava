@@ -5,10 +5,12 @@ import net.onfirenetwork.onsetjava.entity.AttachmentEntity;
 import net.onfirenetwork.onsetjava.entity.Pickup;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.Text3D;
+import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Text3DJNI implements Text3D {
     private int id;
@@ -26,6 +28,7 @@ public class Text3DJNI implements Text3D {
     }
     public void destroy(){
         ServerJNI.callGlobal("DestroyText3D", id);
+        AttributeSystem.destroyedText3D(id);
     }
     public boolean equals(Object obj) {
         if(obj.getClass() != Text3DJNI.class)
@@ -37,7 +40,8 @@ public class Text3DJNI implements Text3D {
         ServerJNI.callGlobal("SetText3DPropertyValue", id, key, value, sync);
     }
     public Object getProperty(String key){
-        return ServerJNI.callGlobal("GetText3DPropertyValue", id, key)[0];
+        Object[] prop = ServerJNI.callGlobal("GetText3DPropertyValue", id, key);
+        return prop.length == 0?null:prop[0];
     }
     public void setVisible(Player player, boolean visible){
         ServerJNI.callGlobal("SetText3DVisibility", id, player.getId(), visible);
@@ -59,5 +63,8 @@ public class Text3DJNI implements Text3D {
     }
     public void setLocation(Vector location){
         ServerJNI.callGlobal("SetText3DLocation", id, location.getX(), location.getY(), location.getZ());
+    }
+    public Map<String, Object> getAttributes(){
+        return AttributeSystem.getText3DAttributes(id);
     }
 }

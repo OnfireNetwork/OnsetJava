@@ -44,6 +44,9 @@ public class Onset {
     public static List<Text3D> getText3Ds(){
         return server.getText3Ds();
     }
+    public static List<WorldObject> getObjects(){
+        return server.getObjects();
+    }
     public static WorldObject getObject(int id){
         return server.getObject(id);
     }
@@ -68,7 +71,17 @@ public class Onset {
     public static void delay(int millis, Runnable callback){
         server.delay(millis, callback);
     }
+    @Deprecated
     public static void timer(int millis, Runnable callback){
         server.timer(millis, callback);
+    }
+    public static Timer createTimer(int intervalMillis, Runnable runnable){
+        return server.createTimer(intervalMillis, runnable);
+    }
+    public static List<Timer> getTimers(){
+        return server.getTimers();
+    }
+    public static Timer getTimer(int id){
+        return server.getTimer(id);
     }
 }

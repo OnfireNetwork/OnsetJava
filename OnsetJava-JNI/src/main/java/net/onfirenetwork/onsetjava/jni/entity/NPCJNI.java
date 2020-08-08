@@ -6,7 +6,10 @@ import net.onfirenetwork.onsetjava.entity.NPC;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.Vehicle;
 import net.onfirenetwork.onsetjava.enums.AttachType;
+import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
+
+import java.util.Map;
 
 public class NPCJNI implements NPC {
     private int id;
@@ -63,12 +66,14 @@ public class NPCJNI implements NPC {
     }
     public void destroy(){
         ServerJNI.callGlobal("DestroyNPC", id);
+        AttributeSystem.destroyedNPC(id);
     }
     public void setProperty(String key, Object value, boolean sync){
         ServerJNI.callGlobal("SetNPCPropertyValue", id, key, value, sync);
     }
     public Object getProperty(String key){
-        return ServerJNI.callGlobal("GetNPCPropertyValue", id, key)[0];
+        Object[] prop = ServerJNI.callGlobal("GetNPCPropertyValue", id, key);
+        return prop.length == 0?null:prop[0];
     }
     public AttachType getAttachType(){
         return AttachType.NPC;
@@ -96,5 +101,8 @@ public class NPCJNI implements NPC {
     }
     public void setRespawnTime(int time){
         ServerJNI.callGlobal("SetNPCRespawnTime", id, time);
+    }
+    public Map<String, Object> getAttributes(){
+        return AttributeSystem.getNPCAttributes(id);
     }
 }

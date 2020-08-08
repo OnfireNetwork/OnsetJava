@@ -6,7 +6,7 @@ import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.enums.Animation;
 
-public interface NPC extends HitEntity, PropertyEntity, AttachmentEntity {
+public interface NPC extends AttributeEntity, HitEntity, PropertyEntity, AttachmentEntity {
     int getId();
     int getDimensionId();
     void setDimension(int dimension);

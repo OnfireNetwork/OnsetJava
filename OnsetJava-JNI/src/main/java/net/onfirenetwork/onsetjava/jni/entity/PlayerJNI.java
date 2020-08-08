@@ -10,6 +10,7 @@ import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.Vehicle;
 import net.onfirenetwork.onsetjava.enums.AttachType;
 import net.onfirenetwork.onsetjava.enums.PlayerState;
+import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
 import net.onfirenetwork.onsetjava.jni.data.NetworkStatsJNI;
 
@@ -263,8 +264,9 @@ public class PlayerJNI implements Player {
         ServerJNI.callGlobal("SetPlayerPropertyValue", id, key, value, sync);
     }
 
-    public Object getProperty(String key){
-        return ServerJNI.callGlobal("GetPlayerPropertyValue", id, key)[0];
+    public Object getProperty(String key) {
+        Object[] prop = ServerJNI.callGlobal("GetPlayerPropertyValue", id, key);
+        return prop.length == 0 ? null : prop[0];
     }
 
     public AttachType getAttachType(){
@@ -301,6 +303,10 @@ public class PlayerJNI implements Player {
 
     public void setVoiceDimension(int dimensionId){
         ServerJNI.callGlobal("SetPlayerVoiceDimension", id, dimensionId);
+    }
+
+    public Map<String, Object> getAttributes(){
+        return AttributeSystem.getPlayerAttributes(id);
     }
 
 }

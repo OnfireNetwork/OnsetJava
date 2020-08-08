@@ -23,6 +23,7 @@ public class PackageBus {
     private Map<String, ExportFunction> exportFunctionMap = new HashMap<>();
     private Map<Integer, Runnable> delayFunctionMap = new HashMap<>();
     private Map<Integer, Runnable> timerFunctionMap = new HashMap<>();
+    private Map<Integer, Integer> timerCallbackMap = new HashMap<>();
 
     public void init(){
         registerLuaEvent(PlayerServerAuthEvent.class);
@@ -139,13 +140,21 @@ public class PackageBus {
         delayFunctionMap.remove(id);
     }
 
-    public void createTimer(int millis, Runnable callback){
+    public int createTimer(int millis, Runnable callback){
         Integer id = 1;
         while (timerFunctionMap.containsKey(id)){
             id++;
         }
         timerFunctionMap.put(id, callback);
-        ServerJNI.callGlobal("TimerJava", millis, id);
+        int timerId = (Integer) ServerJNI.callGlobal("TimerJava", millis, id)[0];
+        timerCallbackMap.put(timerId, id);
+        return timerId;
+    }
+
+    public void destroyTimer(int id){
+        ServerJNI.callGlobal("DestroyTimer", id);
+        timerFunctionMap.remove(timerCallbackMap.get(id));
+        timerCallbackMap.remove(id);
     }
 
     public void callTimer(Integer id){

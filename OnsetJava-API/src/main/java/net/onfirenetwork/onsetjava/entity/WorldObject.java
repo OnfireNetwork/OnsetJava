@@ -4,7 +4,7 @@ import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Vector;
 
-public interface WorldObject extends HitEntity, PropertyEntity, AttachmentEntity {
+public interface WorldObject extends AttributeEntity, HitEntity, PropertyEntity, AttachmentEntity {
     int getId();
     int getDimensionId();
     void setDimension(int dimension);

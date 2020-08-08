@@ -3,10 +3,12 @@ package net.onfirenetwork.onsetjava.jni.entity;
 import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.entity.Pickup;
 import net.onfirenetwork.onsetjava.entity.Player;
+import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PickupJNI implements Pickup {
     private int id;
@@ -24,6 +26,7 @@ public class PickupJNI implements Pickup {
     }
     public void destroy(){
         ServerJNI.callGlobal("DestroyPickup", id);
+        AttributeSystem.destroyedPickup(id);
     }
     public Vector getScale() {
         Object[] coords = ServerJNI.callGlobal("GetPickupScale", id);
@@ -42,7 +45,8 @@ public class PickupJNI implements Pickup {
         ServerJNI.callGlobal("SetPickupPropertyValue", id, key, value, sync);
     }
     public Object getProperty(String key){
-        return ServerJNI.callGlobal("GetPickupPropertyValue", id, key)[0];
+        Object[] prop = ServerJNI.callGlobal("GetPickupPropertyValue", id, key);
+        return prop.length == 0?null:prop[0];
     }
     public void setVisibleFor(List<Player> players){
         List<Integer> table = new ArrayList<>();
@@ -66,5 +70,8 @@ public class PickupJNI implements Pickup {
     }
     public boolean isStreamed(Player player){
         return (Boolean) ServerJNI.callGlobal("IsPickupStreamedIn", id, player.getId())[0];
+    }
+    public Map<String, Object> getAttributes(){
+        return AttributeSystem.getPickupAttributes(id);
     }
 }

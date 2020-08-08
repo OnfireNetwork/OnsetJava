@@ -5,7 +5,10 @@ import net.onfirenetwork.onsetjava.data.Vector;
 import net.onfirenetwork.onsetjava.entity.Door;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.WorldObject;
+import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
+
+import java.util.Map;
 
 public class DoorJNI implements Door {
     private int id;
@@ -39,6 +42,7 @@ public class DoorJNI implements Door {
     }
     public void destroy(){
         ServerJNI.callGlobal("DestroyDoor", id);
+        AttributeSystem.destroyedDoor(id);
     }
     public boolean equals(Object obj) {
         if(obj.getClass() != DoorJNI.class)
@@ -50,7 +54,8 @@ public class DoorJNI implements Door {
         ServerJNI.callGlobal("SetDoorPropertyValue", id, key, value, sync);
     }
     public Object getProperty(String key){
-        return ServerJNI.callGlobal("GetDoorPropertyValue", id, key)[0];
+        Object[] prop = ServerJNI.callGlobal("GetDoorPropertyValue", id, key);
+        return prop.length == 0?null:prop[0];
     }
     public double getHeading(){
         Object[] coords = ServerJNI.callGlobal("GetDoorLocation", id);
@@ -62,5 +67,8 @@ public class DoorJNI implements Door {
     }
     public boolean isStreamed(Player player){
         return (Boolean) ServerJNI.callGlobal("IsDoorStreamedIn", id, player.getId())[0];
+    }
+    public Map<String, Object> getAttributes(){
+        return AttributeSystem.getDoorAttributes(id);
     }
 }

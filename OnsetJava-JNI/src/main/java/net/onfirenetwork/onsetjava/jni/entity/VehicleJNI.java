@@ -8,7 +8,10 @@ import net.onfirenetwork.onsetjava.entity.Door;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.Vehicle;
 import net.onfirenetwork.onsetjava.enums.AttachType;
+import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
+
+import java.util.Map;
 
 public class VehicleJNI implements Vehicle {
     private int id;
@@ -72,6 +75,7 @@ public class VehicleJNI implements Vehicle {
     }
     public void destroy(){
         ServerJNI.callGlobal("DestroyVehicle", id);
+        AttributeSystem.destroyedVehicle(id);
     }
     public int getModel(){
         return (Integer) ServerJNI.callGlobal("GetVehicleModel", id)[0];
@@ -154,12 +158,16 @@ public class VehicleJNI implements Vehicle {
         ServerJNI.callGlobal("SetVehiclePropertyValue", id, key, value, sync);
     }
     public Object getProperty(String key){
-        return ServerJNI.callGlobal("GetVehiclePropertyValue", id, key)[0];
+        Object[] prop = ServerJNI.callGlobal("GetVehiclePropertyValue", id, key);
+        return prop.length == 0?null:prop[0];
     }
     public AttachType getAttachType(){
         return AttachType.VEHICLE;
     }
     public boolean isStreamed(Player player){
         return (Boolean) ServerJNI.callGlobal("IsVehicleStreamedIn", player.getId(), id)[0];
+    }
+    public Map<String, Object> getAttributes(){
+        return AttributeSystem.getVehicleAttributes(id);
     }
 }

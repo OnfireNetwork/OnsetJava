@@ -6,7 +6,10 @@ import net.onfirenetwork.onsetjava.entity.AttachmentEntity;
 import net.onfirenetwork.onsetjava.entity.Player;
 import net.onfirenetwork.onsetjava.entity.WorldObject;
 import net.onfirenetwork.onsetjava.enums.AttachType;
+import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
+
+import java.util.Map;
 
 public class WorldObjectJNI implements WorldObject {
     private int id;
@@ -94,7 +97,8 @@ public class WorldObjectJNI implements WorldObject {
         ServerJNI.callGlobal("SetObjectPropertyValue", id, key, value, sync);
     }
     public Object getProperty(String key){
-        return ServerJNI.callGlobal("GetObjectPropertyValue", id, key)[0];
+        Object[] prop = ServerJNI.callGlobal("GetObjectPropertyValue", id, key);
+        return prop.length == 0?null:prop[0];
     }
     public AttachType getAttachType(){
         return AttachType.OBJECT;
@@ -119,5 +123,8 @@ public class WorldObjectJNI implements WorldObject {
     }
     public void setModel(int model){
         ServerJNI.callGlobal("SetObjectModel", id, model);
+    }
+    public Map<String, Object> getAttributes(){
+        return AttributeSystem.getObjectAttributes(id);
     }
 }

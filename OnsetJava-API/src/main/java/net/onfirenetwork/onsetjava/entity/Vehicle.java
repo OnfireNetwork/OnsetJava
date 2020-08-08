@@ -2,11 +2,12 @@ package net.onfirenetwork.onsetjava.entity;
 
 import net.onfirenetwork.onsetjava.Dimension;
 import net.onfirenetwork.onsetjava.Onset;
+import net.onfirenetwork.onsetjava.component.VehicleComponent;
 import net.onfirenetwork.onsetjava.data.Color;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.Vector;
 
-public interface Vehicle extends HitEntity, PropertyEntity, AttachmentEntity {
+public interface Vehicle extends ComponentEntity<VehicleComponent>, AttributeEntity, HitEntity, PropertyEntity, AttachmentEntity {
     int getId();
     int getDimensionId();
     void setDimension(int dimension);

@@ -104,6 +104,20 @@ public interface Server {
     void createExplosion(int dimension, double x, double y, double z, int type, boolean soundExplosion, double camShakeRadius, double radialForce);
     NetworkStats getNetworkStats();
     void registerRemoteEvent(String name);
+    Timer createTimer(int intervalMillis, Runnable runnable);
+    List<Timer> getTimers();
+    Timer getTimer(int id);
     void delay(int millis, Runnable runnable);
+    @Deprecated
     void timer(int millis, Runnable runnable);
+
+    boolean isValidObject(int id);
+    boolean isValidVehicle(int id);
+    boolean isValidNPC(int id);
+    boolean isValidDoor(int id);
+    boolean isValidPickup(int id);
+    boolean isValidText3D(int id);
+
+
+
 }

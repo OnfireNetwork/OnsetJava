@@ -6,7 +6,7 @@ import net.onfirenetwork.onsetjava.data.Vector;
 
 import java.util.List;
 
-public interface Text3D extends PropertyEntity {
+public interface Text3D extends AttributeEntity, PropertyEntity {
     int getId();
     int getDimensionId();
     void setDimension(int dimension);

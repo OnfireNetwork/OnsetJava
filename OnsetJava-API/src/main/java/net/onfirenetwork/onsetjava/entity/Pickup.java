@@ -6,7 +6,7 @@ import net.onfirenetwork.onsetjava.data.Vector;
 
 import java.util.List;
 
-public interface Pickup extends PropertyEntity {
+public interface Pickup extends AttributeEntity, PropertyEntity {
     int getId();
     int getDimensionId();
     void setDimension(int dimension);

@@ -5,7 +5,7 @@ import net.onfirenetwork.onsetjava.Onset;
 import net.onfirenetwork.onsetjava.data.Location;
 import net.onfirenetwork.onsetjava.data.Vector;
 
-public interface Door extends HitEntity, PropertyEntity {
+public interface Door extends AttributeEntity, HitEntity, PropertyEntity {
     int getId();
     int getDimensionId();
     void setDimension(int dimension);

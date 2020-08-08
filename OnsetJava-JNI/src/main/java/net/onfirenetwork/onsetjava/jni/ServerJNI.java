@@ -59,6 +59,7 @@ public class ServerJNI implements Server {
     private List<Player> players = new ArrayList<>();
     public PackageBus packageBus = new PackageBus();
     public PluginManagerJNI pluginManager = new PluginManagerJNI();
+    private Timer attributeCleanupTimer;
 
     public ServerJNI(String packageName){
         this.packageName = packageName;
@@ -71,6 +72,7 @@ public class ServerJNI implements Server {
 
     public void removePlayer(Player player){
         players.remove(player);
+        AttributeSystem.destroyedPlayer(player.getId());
     }
 
     public String getPackageName(){
@@ -323,8 +325,56 @@ public class ServerJNI implements Server {
     public void delay(int millis, Runnable runnable){
         packageBus.createDelay(millis, runnable);
     }
+
+    @Deprecated
     public void timer(int millis, Runnable runnable){
-        packageBus.createTimer(millis, runnable);
+        createTimer(millis, runnable);
+    }
+
+    public Timer createTimer(int intervalMillis, Runnable runnable){
+        return new TimerJNI(packageBus.createTimer(intervalMillis, runnable));
+    }
+
+    public List<Timer> getTimers(){
+        List<Timer> timers = new ArrayList<>();
+        for(int id : ((Map<Object, Integer>) callGlobal("GetAllTimers")[0]).values()){
+            timers.add(new TimerJNI(id));
+        }
+        return timers;
+    }
+
+    public Timer getTimer(int id){
+        return new TimerJNI(id);
+    }
+
+    public void enableAttributeCleanup(int intervalMillis){
+        if(attributeCleanupTimer != null)
+            return;
+        attributeCleanupTimer = createTimer(intervalMillis, AttributeSystem::cleanup);
+    }
+
+    public boolean isValidObject(int id){
+        return (Boolean) callGlobal("IsValidObject", id)[0];
+    }
+
+    public boolean isValidDoor(int id){
+        return (Boolean) callGlobal("IsValidDoor", id)[0];
+    }
+
+    public boolean isValidNPC(int id){
+        return (Boolean) callGlobal("IsValidNPC", id)[0];
+    }
+
+    public boolean isValidText3D(int id){
+        return (Boolean) callGlobal("IsValidText3D", id)[0];
+    }
+
+    public boolean isValidPickup(int id){
+        return (Boolean) callGlobal("IsValidPickup", id)[0];
+    }
+
+    public boolean isValidVehicle(int id){
+        return (Boolean) callGlobal("IsValidVehicle", id)[0];
     }
 
 }
