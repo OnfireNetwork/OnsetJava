@@ -105,10 +105,4 @@ public class NPCJNI implements NPC {
     public Map<String, Object> getAttributes(){
         return AttributeSystem.getNPCAttributes(id);
     }
-    public void putAt(String key, Object value){
-        setAttribute(key, value);
-    }
-    public Object getAt(String key){
-        return getAttribute(key);
-    }
 }

@@ -71,10 +71,4 @@ public class DoorJNI implements Door {
     public Map<String, Object> getAttributes(){
         return AttributeSystem.getDoorAttributes(id);
     }
-    public void putAt(String key, Object value){
-        setAttribute(key, value);
-    }
-    public Object getAt(String key){
-        return getAttribute(key);
-    }
 }

@@ -67,10 +67,4 @@ public class Text3DJNI implements Text3D {
     public Map<String, Object> getAttributes(){
         return AttributeSystem.getText3DAttributes(id);
     }
-    public void putAt(String key, Object value){
-        setAttribute(key, value);
-    }
-    public Object getAt(String key){
-        return getAttribute(key);
-    }
 }

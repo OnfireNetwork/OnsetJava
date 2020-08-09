@@ -14,9 +14,7 @@ import net.onfirenetwork.onsetjava.jni.AttributeSystem;
 import net.onfirenetwork.onsetjava.jni.ServerJNI;
 import net.onfirenetwork.onsetjava.jni.data.NetworkStatsJNI;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerJNI implements Player {
 
@@ -307,13 +305,6 @@ public class PlayerJNI implements Player {
 
     public Map<String, Object> getAttributes(){
         return AttributeSystem.getPlayerAttributes(id);
-    }
-
-    public void putAt(String key, Object value){
-        setAttribute(key, value);
-    }
-    public Object getAt(String key){
-        return getAttribute(key);
     }
 
 }

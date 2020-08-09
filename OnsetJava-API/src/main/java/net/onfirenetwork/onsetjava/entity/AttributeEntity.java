@@ -24,7 +24,4 @@ public interface AttributeEntity {
         return value;
     }
 
-    void putAt(String key, Object value);
-    Object getAt(String key);
-
 }
