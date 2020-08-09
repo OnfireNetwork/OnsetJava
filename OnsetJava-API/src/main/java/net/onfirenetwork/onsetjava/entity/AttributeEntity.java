@@ -23,13 +23,8 @@ public interface AttributeEntity {
         }
         return value;
     }
-    
-    default void putAt(String key, Object value){
-        setAttribute(key, value);
-    }
 
-    default <T> T getAt(String key){
-        return getAttribute(key);
-    }
+    void putAt(String key, Object value);
+    Object getAt(String key);
 
 }

@@ -170,4 +170,11 @@ public class VehicleJNI implements Vehicle {
     public Map<String, Object> getAttributes(){
         return AttributeSystem.getVehicleAttributes(id);
     }
+
+    public void putAt(String key, Object value){
+        setAttribute(key, value);
+    }
+    public Object getAt(String key){
+        return getAttribute(key);
+    }
 }

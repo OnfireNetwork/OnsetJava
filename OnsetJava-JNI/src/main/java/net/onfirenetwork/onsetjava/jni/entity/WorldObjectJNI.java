@@ -127,4 +127,10 @@ public class WorldObjectJNI implements WorldObject {
     public Map<String, Object> getAttributes(){
         return AttributeSystem.getObjectAttributes(id);
     }
+    public void putAt(String key, Object value){
+        setAttribute(key, value);
+    }
+    public Object getAt(String key){
+        return getAttribute(key);
+    }
 }

@@ -74,4 +74,10 @@ public class PickupJNI implements Pickup {
     public Map<String, Object> getAttributes(){
         return AttributeSystem.getPickupAttributes(id);
     }
+    public void putAt(String key, Object value){
+        setAttribute(key, value);
+    }
+    public Object getAt(String key){
+        return getAttribute(key);
+    }
 }

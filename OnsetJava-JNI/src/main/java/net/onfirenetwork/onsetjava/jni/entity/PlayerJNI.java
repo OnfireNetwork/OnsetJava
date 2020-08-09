@@ -309,4 +309,11 @@ public class PlayerJNI implements Player {
         return AttributeSystem.getPlayerAttributes(id);
     }
 
+    public void putAt(String key, Object value){
+        setAttribute(key, value);
+    }
+    public Object getAt(String key){
+        return getAttribute(key);
+    }
+
 }
