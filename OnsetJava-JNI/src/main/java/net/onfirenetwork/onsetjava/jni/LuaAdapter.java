@@ -5,6 +5,7 @@ import net.onfirenetwork.onsetjava.i18n.I18N;
 import net.onfirenetwork.onsetjava.i18n.I18NPlugin;
 import net.onfirenetwork.onsetjava.plugin.event.Cancellable;
 import net.onfirenetwork.onsetjava.plugin.event.Event;
+import net.onfirenetwork.onsetjava.plugin.event.player.PlayerQuitEvent;
 import net.onfirenetwork.onsetjava.plugin.event.player.PlayerRemoteEvent;
 
 import java.util.ArrayList;
@@ -47,6 +48,10 @@ public class LuaAdapter {
         try {
             Event event = EventTransformer.transform(name, tableArray(args));
             ServerJNI.getInstance().callEvent(event);
+            if(event instanceof PlayerQuitEvent){
+                PlayerQuitEvent e = (PlayerQuitEvent) event;
+                AttributeSystem.destroyedPlayer(e.getPlayer().getId());
+            }
             if(event instanceof Cancellable){
                 return !((Cancellable) event).isCancelled();
             }

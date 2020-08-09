@@ -72,7 +72,6 @@ public class ServerJNI implements Server {
 
     public void removePlayer(Player player){
         players.remove(player);
-        AttributeSystem.destroyedPlayer(player.getId());
     }
 
     public String getPackageName(){
