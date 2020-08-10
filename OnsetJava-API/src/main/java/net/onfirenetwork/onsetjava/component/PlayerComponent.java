@@ -20,6 +20,7 @@ public abstract class PlayerComponent extends EntityComponent<Player> {
     public void onSpawn(){}
     public void onSteamAuth(){}
     public void onJoin(){}
+    public void onQuit(){}
     public void onInteractDoor(Door door, boolean openRequested){}
     public void onStateChange(PlayerState newState, PlayerState oldState){}
     public void onRemoteEvent(String event, Object[] args){}

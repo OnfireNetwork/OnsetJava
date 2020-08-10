@@ -45,6 +45,11 @@ public class EntityComponentSystem {
     }
 
     @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e){
+        applyEvents(e.getPlayer(), PlayerComponent::onQuit);
+    }
+
+    @EventHandler
     public void onPlayerEnterVehicle(PlayerEnterVehicleEvent e){
         applyEvents(e.getPlayer(), c -> c.onEnterVehicle(e.getVehicle(), e.getSeat()));
         applyEvents(e.getVehicle(), c -> c.onEnter(e.getPlayer(), e.getSeat()));
